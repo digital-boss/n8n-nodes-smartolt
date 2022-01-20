@@ -23,6 +23,7 @@ import {
 } from './descriptions';
 
 import {
+	simplify,
 	smartOltApiRequest,
 } from './GenericFunctions';
 
@@ -250,6 +251,8 @@ export class SmartOlt implements INodeType {
 
 				if (responseData.status === false) {
 					throw new NodeOperationError(this.getNode(), responseData.error);
+				} else {
+					responseData = simplify(responseData);
 				}
 
 				if (Array.isArray(responseData)) {

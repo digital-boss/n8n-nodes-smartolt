@@ -51,3 +51,23 @@ export async function smartOltApiRequest(this: IHookFunctions | IExecuteFunction
 		throw new NodeApiError(this.getNode(), error);
 	}
 }
+
+/**
+ * Simplifies the output
+ *
+ * @export
+ * @param IDataObject responseData
+ * @returns IDataObject
+ */
+export function simplify(responseData: IDataObject): IDataObject {
+	if (Object.keys(responseData.response as IDataObject).length === 0) {
+		// if responseData.response is empty
+		return {
+			success: true,
+			message: 'No records got returned.',
+		};
+	} else {
+		return responseData.response as IDataObject;
+	}
+
+}
