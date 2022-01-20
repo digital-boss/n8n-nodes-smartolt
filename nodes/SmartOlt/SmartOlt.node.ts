@@ -6,7 +6,9 @@ import {
 	ICredentialsDecrypted,
 	ICredentialTestFunctions,
 	IDataObject,
+	ILoadOptionsFunctions,
 	INodeExecutionData,
+	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
 	NodeCredentialTestResult,
@@ -76,6 +78,30 @@ export class SmartOlt implements INodeType {
 	};
 
 	methods = {
+		loadOptions: {
+			// Get all the OLT IDs to display them to user so that he can
+			// select them easily
+			async getOltIds(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				const oltIds = await smartOltApiRequest.call(this, 'GET', '/system/get_olts');
+
+				for (const id of oltIds) {
+					returnData.push({
+						name: id,
+						value: id,
+					});
+				}
+
+				returnData.sort((a, b) => {
+					if (a.name < b.name) { return -1; }
+					if (a.name > b.name) { return 1; }
+					return 0;
+				});
+
+				return returnData;
+			},
+		},
 		credentialTest: {
 			async testSmartOltApiAuth(this: ICredentialTestFunctions, credential: ICredentialsDecrypted): Promise<NodeCredentialTestResult> {
 
