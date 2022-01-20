@@ -164,9 +164,6 @@ export const onuFields: INodeProperties[] = [
 		displayName: 'OLT ID',
 		name: 'olt_id',
 		type: 'number',
-		typeOptions: {
-			loadOptionsMethod: 'getOltIds',
-		},
 		required: true,
 		displayOptions: {
 			show: {
@@ -629,9 +626,6 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'OLT ID',
 				name: 'olt_id',
 				type: 'number',
-				typeOptions: {
-					loadOptionsMethod: 'getOltIds',
-				},
 				default: 0,
 				description: 'The ID of the OLT for which to get the ONUs details. Leave empty if you want ONUs details from all OLTs.',
 			},
@@ -683,9 +677,6 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'OLT ID',
 				name: 'olt_id',
 				type: 'number',
-				typeOptions: {
-					loadOptionsMethod: 'getOltIds',
-				},
 				default: 0,
 				description: 'The ID of the OLT for which to get the ONUs statuses. Leave empty if you want signals from all OLTs.',
 			},

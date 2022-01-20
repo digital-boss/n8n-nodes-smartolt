@@ -49,7 +49,7 @@ export class SmartOlt implements INodeType {
 			{
 				name: 'smartOltApi',
 				required: true,
-				testedBy: 'testSmartOltApiAuth',
+				// testedBy: 'testSmartOltApiAuth',
 			},
 		],
 		properties: [
@@ -77,66 +77,71 @@ export class SmartOlt implements INodeType {
 		],
 	};
 
-	methods = {
-		loadOptions: {
-			// Get all the OLT IDs to display them to user so that he can
-			// select them easily
-			async getOltIds(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const returnData: INodePropertyOptions[] = [];
-
-				const oltIds = await smartOltApiRequest.call(this, 'GET', '/system/get_olts');
-
-				for (const id of oltIds) {
-					returnData.push({
-						name: id,
-						value: id,
-					});
-				}
-
-				returnData.sort((a, b) => {
-					if (a.name < b.name) { return -1; }
-					if (a.name > b.name) { return 1; }
-					return 0;
-				});
-
-				return returnData;
-			},
-		},
-		credentialTest: {
-			async testSmartOltApiAuth(this: ICredentialTestFunctions, credential: ICredentialsDecrypted): Promise<NodeCredentialTestResult> {
-
-				const options: OptionsWithUri = {
-					method: 'GET',
-					headers: {
-						'X-Token': credential.data!.apiKey,
-					},
-					uri: `${credential.data!.url}/system/get_olts`,
-					json: true,
-				};
-
-				try {
-					const response = await this.helpers.request(options);
-
-					if (response.status === false) {
-						return {
-							status: 'Error',
-							message: `${response.error}`,
-						};
-					}
-				} catch (err) {
-					return {
-						status: 'Error',
-						message: `${err.message}`,
-					};
-				}
-
-				return {
-					status: 'OK',
-					message: 'Connection successful!',
-				};
-			},
-		},
-	};
+	// DON'T USE GET ALL ENDPOINTS. YOU CAN ONLY GET ALL 3 TIMES PER HOUR
+	// methods = {
+	// 	loadOptions: {
+	// 		// Get all the OLT IDs to display them to user so that he can
+	// 		// select them easily
+	// 		async getOltIds(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	// 			const returnData: INodePropertyOptions[] = [];
+	//
+	// 			const oltIds = await smartOltApiRequest.call(this, 'GET', '/system/get_olts');
+	//
+	// 			for (const id of oltIds) {
+	// 				returnData.push({
+	// 					name: id,
+	// 					value: id,
+	// 				});
+	// 			}
+	//
+	// 			returnData.sort((a, b) => {
+	// 				if (a.name < b.name) { return -1; }
+	// 				if (a.name > b.name) { return 1; }
+	// 				return 0;
+	// 			});
+	//
+	// 			return returnData;
+	// 		},
+	// 	},
+	//
+	// 	credentialTest: {
+	// 		async testSmartOltApiAuth(this: ICredentialTestFunctions, credential: ICredentialsDecrypted): Promise<NodeCredentialTestResult> {
+	//
+	// 			const options: OptionsWithUri = {
+	// 				method: 'GET',
+	// 				headers: {
+	// 					'X-Token': credential.data!.apiKey,
+	// 				},
+	// 				qs: {
+	//
+	// 				},
+	// 				uri: `${credential.data!.url}/system/get_olts`,
+	// 				json: true,
+	// 			};
+	//
+	// 			try {
+	// 				const response = await this.helpers.request(options);
+	//
+	// 				if (response.status === false) {
+	// 					return {
+	// 						status: 'Error',
+	// 						message: `${response.error}`,
+	// 					};
+	// 				}
+	// 			} catch (err) {
+	// 				return {
+	// 					status: 'Error',
+	// 					message: `${err.message}`,
+	// 				};
+	// 			}
+	//
+	// 			return {
+	// 				status: 'OK',
+	// 				message: 'Connection successful!',
+	// 			};
+	// 		},
+	// 	},
+	// };
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
