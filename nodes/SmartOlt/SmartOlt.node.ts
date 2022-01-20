@@ -1,0 +1,195 @@
+import {
+	IExecuteFunctions,
+} from 'n8n-core';
+
+import {
+	IDataObject,
+	INodeExecutionData,
+	INodeType,
+	INodeTypeDescription,
+	NodeOperationError,
+} from 'n8n-workflow';
+
+import {
+	oltFields,
+	oltOperations,
+	onuFields,
+	onuOperations
+} from './descriptions';
+
+import {
+	smartOltApiRequest,
+} from './GenericFunctions';
+
+export class SmartOlt implements INodeType {
+	description: INodeTypeDescription = {
+		displayName: 'SmartOLT',
+		name: 'smartOlt',
+		icon: 'file:smartOlt.svg',
+		group: ['transform'],
+		version: 1,
+		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+		description: 'Consume SmartOLT API',
+		defaults: {
+				name: 'SmartOlt',
+				color: '#018FFB',
+		},
+		inputs: ['main'],
+		outputs: ['main'],
+		credentials: [
+			{
+				name: 'smartOltApi',
+				required: true,
+				// testedBy: '', //todo
+			},
+		],
+		properties: [
+			{
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
+				options: [
+					{
+						name: 'OLT',
+						value: 'olt',
+					},
+					{
+						name: 'ONU',
+						value: 'onu',
+					},
+				],
+				default: 'olt',
+				required: true,
+			},
+			...oltOperations,
+			...oltFields,
+			...onuOperations,
+			...onuFields,
+		],
+	};
+
+	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+		const items = this.getInputData();
+		let responseData;
+		const returnData: IDataObject[] = [];
+		const resource = this.getNodeParameter('resource', 0) as string;
+		const operation = this.getNodeParameter('operation', 0) as string;
+		const body: IDataObject = {};
+		const qs: IDataObject = {};
+
+		for (let i = 0; i < items.length; i++) {
+			try {
+				if (resource === 'olt') {
+					if (operation === 'getAll') {
+						// Get OLTs list <https://api.smartolt.com/#26e5dc8a-971e-4f0d-ae67-cb34ac2025ca>
+
+						responseData = await smartOltApiRequest.call(this, 'GET', '/system/get_olts');
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						}
+					}
+				} else if (resource === 'onu') {
+					if (operation === 'getAllUnconfigured') {
+						// Get all unconfigured ONUs <https://api.smartolt.com/#c2f59ef3-5732-4247-8422-7df69f7e32c1>
+
+						const additionalFields = this.getNodeParameter('additionalFields', i) as string;
+						Object.assign(qs, additionalFields);
+
+						responseData = await smartOltApiRequest.call(this, 'GET', '/onu/unconfigured_onus', {}, qs);
+
+					} else if (operation === 'getAllUnconfiguredByOltUniqueId') {
+						// Get unconfigured ONUs by OLT unique ID <https://api.smartolt.com/#97c6e560-a827-4362-846f-e914c4736a77>
+
+						const oltId = this.getNodeParameter('oltId', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i) as string;
+						Object.assign(qs, additionalFields);
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/unconfigured_onus_for_olt/${oltId}`, {}, qs);
+
+					} else if (operation === 'authorize') {
+						// Authorize ONU <https://api.smartolt.com/#28dc6cf8-7a91-4729-aebb-8757f87e2fd3>
+
+						body.olt_id = this.getNodeParameter('olt_id', i) as string;
+						body.pon_type = this.getNodeParameter('pon_type', i) as string;
+						body.sn = this.getNodeParameter('sn', i) as string;
+						body.onu_type = this.getNodeParameter('onu_type', i) as string;
+						body.onu_mode = this.getNodeParameter('onu_mode', i) as string;
+						body.vlan = this.getNodeParameter('vlan', i) as string;
+						body.zone = this.getNodeParameter('zone', i) as string;
+						body.name = this.getNodeParameter('name', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i) as string;
+						Object.assign(body, additionalFields);
+
+						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/authorize_onu`, body);
+
+					} else if (operation === 'updateOnuSpeedProfilesByOnuUniqueExternalId') {
+						// Update ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#6b753440-3567-8644-bfed-045dbfe3f248>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i) as string;
+						Object.assign(body, additionalFields);
+
+						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/update_onu_speed_profiles/${onuExternalId}`, body);
+
+					} else if (operation === 'getOnuFullStatusInfoByOnuUniqueExternalID') {
+						// Get ONU full status info by ONU unique external ID <https://api.smartolt.com/#d3d19dbd-a232-4e08-93bc-a17500cf4b01>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_full_status_info/${onuExternalId}`);
+
+					} else if (operation === 'setOnuEthernetPortModeToTransparentByOnuUniqueExternalId') {
+						// Set ONU ethernet port mode to Transparent by ONU unique external ID <https://api.smartolt.com/#be835312-92e4-4a89-b751-0fab05f542d4>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+						body.ethernet_port = this.getNodeParameter('ethernet_port', i) as string;
+						const additionalFields = this.getNodeParameter('additionalFields', i) as string;
+						Object.assign(body, additionalFields);
+
+						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_ethernet_port_transparent/${onuExternalId}`, body);
+
+					} else if (operation === 'getAllOnusDetails') {
+						// Get all ONUs details <https://api.smartolt.com/#4e11cd01-2e4b-4f83-807d-963c4e7434af>
+
+						const additionalFields = this.getNodeParameter('additionalFields', i) as string;
+						Object.assign(qs, additionalFields);
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_all_onus_details`, {}, qs);
+					} else if (operation === 'getAllOnusSignals') {
+						// Get all ONUs signals <https://api.smartolt.com/#43e3094c-0db5-46ea-821e-1ae9c4038006>
+
+						const additionalFields = this.getNodeParameter('additionalFields', i) as string;
+						Object.assign(qs, additionalFields);
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onus_signals`);
+
+					} else if (operation === 'getOnuTrafficGraphByOnuUniqueExternalId') {
+						// Get ONU traffic graph by ONU unique external ID <https://api.smartolt.com/#8342f9ca-d6e2-4938-b5a0-8be0531d75a9>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+						const graphType = this.getNodeParameter('graphType', i) as string;
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_traffic_graph/${onuExternalId}/${graphType}`);
+					}
+				}
+
+				if (responseData.status === false) {
+					throw new NodeOperationError(this.getNode(), responseData.error);
+				}
+
+				if (Array.isArray(responseData)) {
+					returnData.push.apply(returnData, responseData as IDataObject[]);
+				} else {
+					returnData.push(responseData as IDataObject);
+				}
+			} catch (error) {
+				if (this.continueOnFail()) {
+					returnData.push({ error: error.message });
+					continue;
+				}
+				throw error;
+			}
+		}
+		return [this.helpers.returnJsonArray(returnData)];
+	}
+}
