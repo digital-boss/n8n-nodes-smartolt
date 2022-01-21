@@ -3,15 +3,10 @@ import {
 } from 'n8n-core';
 
 import {
-	ICredentialsDecrypted,
-	ICredentialTestFunctions,
 	IDataObject,
-	ILoadOptionsFunctions,
 	INodeExecutionData,
-	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
-	NodeCredentialTestResult,
 	NodeOperationError,
 } from 'n8n-workflow';
 
@@ -27,13 +22,9 @@ import {
 	smartOltApiRequest,
 } from './GenericFunctions';
 
-import {
-	OptionsWithUri
-} from 'request';
-
 export class SmartOlt implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'SmartOLT',
+		displayName: 'SmartOLT (v0.1.2)',
 		name: 'smartOlt',
 		icon: 'file:smartOlt.svg',
 		group: ['transform'],
@@ -79,6 +70,7 @@ export class SmartOlt implements INodeType {
 	};
 
 	// DON'T USE GET ALL ENDPOINTS. YOU CAN ONLY GET ALL 3 TIMES PER HOUR
+	//
 	// methods = {
 	// 	loadOptions: {
 	// 		// Get all the OLT IDs to display them to user so that he can
@@ -160,10 +152,8 @@ export class SmartOlt implements INodeType {
 						// Get OLTs list <https://api.smartolt.com/#26e5dc8a-971e-4f0d-ae67-cb34ac2025ca>
 
 						responseData = await smartOltApiRequest.call(this, 'GET', '/system/get_olts');
-						if (responseData.status === false) {
-							throw new NodeOperationError(this.getNode(), responseData.error);
-						}
 					}
+
 				} else if (resource === 'onu') {
 					if (operation === 'getAllUnconfigured') {
 						// Get all unconfigured ONUs <https://api.smartolt.com/#c2f59ef3-5732-4247-8422-7df69f7e32c1>
@@ -173,7 +163,7 @@ export class SmartOlt implements INodeType {
 
 						responseData = await smartOltApiRequest.call(this, 'GET', '/onu/unconfigured_onus', {}, qs);
 
-					} else if (operation === 'getAllUnconfiguredByOltUniqueId') {
+					} else if (operation === 'getUnconfiguredByOltUniqueId') {
 						// Get unconfigured ONUs by OLT unique ID <https://api.smartolt.com/#97c6e560-a827-4362-846f-e914c4736a77>
 
 						const oltId = this.getNodeParameter('oltId', i) as string;

@@ -21,8 +21,8 @@ export const onuOperations: INodeProperties[] = [
 				description: 'Get a list of all unconfigured ONUs on all OLTs',
 			},
 			{
-				name: 'Get All Unconfigured By OLT Unique ID',
-				value: 'getAllUnconfiguredByOltUniqueId',
+				name: 'Get Unconfigured By OLT Unique ID',
+				value: 'getUnconfiguredByOltUniqueId',
 				description: 'Gets a list of all unconfigured ONUs for a specified OLT unique ID',
 			},
 			{
@@ -33,6 +33,7 @@ export const onuOperations: INodeProperties[] = [
 			{
 				name: 'Update ONU Speed Profiles By ONU Unique External ID',
 				value: 'updateOnuSpeedProfilesByOnuUniqueExternalId',
+				description: 'At least one speed profile name must be provided. The profile names must be the ones defined in SmartOLT Speed Profiles section.',
 			},
 			{
 				name: 'Get ONU Full Status Info By ONU Unique External ID',
@@ -83,6 +84,7 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
+		placeholder: 'Add Field',
 		default: {},
 		options: [
 			{
@@ -103,13 +105,13 @@ export const onuFields: INodeProperties[] = [
 	},
 
 	/*-------------------------------------------------------------------------- */
-	/*                 	 onu:getAllUnconfiguredByOltUniqueId        			 */
+	/*                 	 onu:getUnconfiguredByOltUniqueId        			 */
 	/* ------------------------------------------------------------------------- */
 
 	{
 		displayName: 'OLT ID',
 		name: 'oltId',
-		type: 'string',
+		type: 'number',
 		required: true,
 		displayOptions: {
 			show: {
@@ -117,11 +119,11 @@ export const onuFields: INodeProperties[] = [
 					'onu',
 				],
 				operation: [
-					'getAllUnconfiguredByOltUniqueId',
+					'getUnconfiguredByOltUniqueId',
 				],
 			},
 		},
-		default: '',
+		default: 0,
 	},
 	{
 		displayName: 'Additional Fields',
@@ -133,10 +135,11 @@ export const onuFields: INodeProperties[] = [
 					'onu',
 				],
 				operation: [
-					'getAllUnconfiguredByOltUniqueId',
+					'getUnconfiguredByOltUniqueId',
 				],
 			},
 		},
+		placeholder: 'Add Field',
 		default: {},
 		options: [
 			{
@@ -335,6 +338,7 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
+		placeholder: 'Add Field',
 		default: {},
 		options: [
 			{
@@ -435,12 +439,14 @@ export const onuFields: INodeProperties[] = [
 				name: 'upload_speed_profile_name',
 				type: 'string',
 				default: '',
+				description: 'Example: 50M',
 			},
 			{
 				displayName: 'Download Speed Profile Name',
 				name: 'download_speed_profile_name',
 				type: 'string',
 				default: '',
+				description: 'Example: 100M',
 			},
 		],
 	},
@@ -480,6 +486,7 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
+		placeholder: 'Add Field',
 		default: {},
 		options: [
 			{
@@ -487,12 +494,14 @@ export const onuFields: INodeProperties[] = [
 				name: 'upload_speed_profile_name',
 				type: 'string',
 				default: '',
+				description: 'Example: 50M',
 			},
 			{
 				displayName: 'Download Speed Profile Name',
 				name: 'download_speed_profile_name',
 				type: 'string',
 				default: '',
+				description: 'Example: 100M',
 			},
 		],
 	},
@@ -572,6 +581,7 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
+		placeholder: 'Add Field',
 		default: {},
 		options: [
 			{
@@ -620,6 +630,7 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
+		placeholder: 'Add Field',
 		default: {},
 		options: [
 			{
@@ -671,6 +682,7 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
+		placeholder: 'Add Field',
 		default: {},
 		options: [
 			{
