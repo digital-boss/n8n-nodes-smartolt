@@ -30,7 +30,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.1.3)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.1.4)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -232,8 +232,6 @@ export class SmartOlt implements INodeType {
 
 						if (responseData.status === false) {
 							throw new NodeOperationError(this.getNode(), responseData.error);
-						} else {
-							responseData = simplify(responseData, 'full_status_info');
 						}
 
 					} else if (operation === 'setOnuEthernetPortModeToTransparentByOnuUniqueExternalId') {
@@ -339,7 +337,7 @@ export class SmartOlt implements INodeType {
 		}
 
 		if (operation === 'getOnuTrafficGraphByOnuUniqueExternalId') {
-			// For file downloads the files get attached to the existing items
+			// For binary files the files get attached to the existing items
 			return this.prepareOutputData(items);
 		} else {
 			// For all other ones does the output get replaced
