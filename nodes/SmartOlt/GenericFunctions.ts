@@ -64,15 +64,12 @@ export async function smartOltApiRequest(this: IHookFunctions | IExecuteFunction
  * @param IDataObject responseData
  * @returns IDataObject
  */
-export function simplify(responseData: IDataObject): IDataObject {
-	if (Object.keys(responseData.response as IDataObject).length === 0) {
-		// if responseData.response is empty
-		return {
-			success: true,
-			message: 'No records got returned.',
-		};
+export function simplify(responseData: IDataObject, property = 'response'): IDataObject {
+	if (Object.keys(responseData[property] as IDataObject).length !== 0) {
+		// if responseData[property] is not empty
+		return responseData[property] as IDataObject;
 	} else {
-		return responseData.response as IDataObject;
+		return responseData;
 	}
 
 }

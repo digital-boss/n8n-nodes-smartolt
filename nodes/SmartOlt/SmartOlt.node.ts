@@ -152,6 +152,12 @@ export class SmartOlt implements INodeType {
 						// Get OLTs list <https://api.smartolt.com/#26e5dc8a-971e-4f0d-ae67-cb34ac2025ca>
 
 						responseData = await smartOltApiRequest.call(this, 'GET', '/system/get_olts');
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
 					}
 
 				} else if (resource === 'onu') {
@@ -163,6 +169,12 @@ export class SmartOlt implements INodeType {
 
 						responseData = await smartOltApiRequest.call(this, 'GET', '/onu/unconfigured_onus', {}, qs);
 
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
+
 					} else if (operation === 'getUnconfiguredByOltUniqueId') {
 						// Get unconfigured ONUs by OLT unique ID <https://api.smartolt.com/#97c6e560-a827-4362-846f-e914c4736a77>
 
@@ -171,6 +183,12 @@ export class SmartOlt implements INodeType {
 						Object.assign(qs, additionalFields);
 
 						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/unconfigured_onus_for_olt/${oltId}`, {}, qs);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
 
 					} else if (operation === 'authorize') {
 						// Authorize ONU <https://api.smartolt.com/#28dc6cf8-7a91-4729-aebb-8757f87e2fd3>
@@ -188,6 +206,10 @@ export class SmartOlt implements INodeType {
 
 						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/authorize_onu`, body);
 
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						}
+
 					} else if (operation === 'updateOnuSpeedProfilesByOnuUniqueExternalId') {
 						// Update ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#6b753440-3567-8644-bfed-045dbfe3f248>
 
@@ -197,12 +219,22 @@ export class SmartOlt implements INodeType {
 
 						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/update_onu_speed_profiles/${onuExternalId}`, body);
 
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						}
+
 					} else if (operation === 'getOnuFullStatusInfoByOnuUniqueExternalID') {
 						// Get ONU full status info by ONU unique external ID <https://api.smartolt.com/#d3d19dbd-a232-4e08-93bc-a17500cf4b01>
 
 						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
 
 						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_full_status_info/${onuExternalId}`);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData, 'full_status_info');
+						}
 
 					} else if (operation === 'setOnuEthernetPortModeToTransparentByOnuUniqueExternalId') {
 						// Set ONU ethernet port mode to Transparent by ONU unique external ID <https://api.smartolt.com/#be835312-92e4-4a89-b751-0fab05f542d4>
@@ -214,6 +246,10 @@ export class SmartOlt implements INodeType {
 
 						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_ethernet_port_transparent/${onuExternalId}`, body);
 
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						}
+
 					} else if (operation === 'getAllOnusDetails') {
 						// Get all ONUs details <https://api.smartolt.com/#4e11cd01-2e4b-4f83-807d-963c4e7434af>
 
@@ -221,6 +257,13 @@ export class SmartOlt implements INodeType {
 						Object.assign(qs, additionalFields);
 
 						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_all_onus_details`, {}, qs);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData, 'onus');
+						}
+
 					} else if (operation === 'getAllOnusSignals') {
 						// Get all ONUs signals <https://api.smartolt.com/#43e3094c-0db5-46ea-821e-1ae9c4038006>
 
@@ -228,6 +271,12 @@ export class SmartOlt implements INodeType {
 						Object.assign(qs, additionalFields);
 
 						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onus_signals`);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
 
 					} else if (operation === 'getOnuTrafficGraphByOnuUniqueExternalId') {
 						// Get ONU traffic graph by ONU unique external ID <https://api.smartolt.com/#8342f9ca-d6e2-4938-b5a0-8be0531d75a9>
@@ -267,14 +316,6 @@ export class SmartOlt implements INodeType {
 
 						items[i].binary![binaryPropertyName] = await this.helpers.prepareBinaryData(responseData, endpoint);
 
-					}
-				}
-
-				if (operation !== 'getOnuTrafficGraphByOnuUniqueExternalId') {
-					if (responseData.status === false) {
-						throw new NodeOperationError(this.getNode(), responseData.error);
-					} else {
-						responseData = simplify(responseData);
 					}
 				}
 
