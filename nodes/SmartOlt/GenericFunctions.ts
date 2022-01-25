@@ -16,7 +16,7 @@ import {
 } from 'n8n-workflow';
 
 export async function smartOltApiRequest(this: IHookFunctions | IExecuteFunctions | IExecuteSingleFunctions | ILoadOptionsFunctions,
-	method: string, resource: string, body: IDataObject = {}, qs: IDataObject = {}, uri?: string): Promise<any> { // tslint:disable-line:no-any
+	method: string, resource: string, body: IDataObject = {}, qs: IDataObject = {}, uri?: string, encoding?: null | undefined): Promise<any> { // tslint:disable-line:no-any
 
 	try {
 		// Get credentials the user provided for this node
@@ -44,6 +44,10 @@ export async function smartOltApiRequest(this: IHookFunctions | IExecuteFunction
 		// @ts-ignore
 		if (Object.keys(options.form).length === 0) {
 			delete options.form;
+		}
+
+		if (encoding === null) {
+			options.encoding = null;
 		}
 
 		return this.helpers.request!(options);

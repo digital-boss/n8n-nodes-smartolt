@@ -778,5 +778,23 @@ export const onuFields: INodeProperties[] = [
 			},
 		],
 	},
+	{
+		displayName: 'Binary Property',
+		name: 'binaryPropertyName',
+		type: 'string',
+		default: 'data',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getOnuTrafficGraphByOnuUniqueExternalId',
+				],
+			},
+		},
+		description: 'Name of the binary property to which to write the data of the read file',
+	},
 
 ];

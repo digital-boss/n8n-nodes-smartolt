@@ -24,13 +24,13 @@ import {
 
 export class SmartOlt implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'SmartOLT (v0.1.2)',
+		displayName: 'SmartOLT',
 		name: 'smartOlt',
 		icon: 'file:smartOlt.svg',
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API',
+		description: 'Consume SmartOLT API (v0.1.2)',
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -235,7 +235,38 @@ export class SmartOlt implements INodeType {
 						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
 						const graphType = this.getNodeParameter('graphType', i) as string;
 
-						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_traffic_graph/${onuExternalId}/${graphType}`);
+						const endpoint = `/onu/get_onu_traffic_graph/${onuExternalId}/${graphType}`;
+
+						// Return the data as a buffer
+						const encoding = null;
+
+						responseData = await smartOltApiRequest.call(this,
+							'GET',
+							endpoint,
+							undefined,
+							undefined,
+							undefined,
+							encoding,
+						);
+
+						const newItem: INodeExecutionData = {
+							json: items[i].json,
+							binary: {},
+						};
+
+						if (items[i].binary !== undefined) {
+							// Create a shallow copy of the binary data so that the old
+							// data references which do not get changed still stay behind
+							// but the incoming data does not get changed.
+							Object.assign(newItem.binary, items[i].binary);
+						}
+
+						items[i] = newItem;
+
+						const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i) as string;
+
+						items[i].binary![binaryPropertyName] = await this.helpers.prepareBinaryData(responseData, endpoint);
+
 					}
 				}
 
@@ -258,6 +289,12 @@ export class SmartOlt implements INodeType {
 				throw error;
 			}
 		}
-		return [this.helpers.returnJsonArray(returnData)];
+		if (operation === 'getOnuTrafficGraphByOnuUniqueExternalId') {
+			// For file downloads the files get attached to the existing items
+			return this.prepareOutputData(items);
+		} else {
+			// For all other ones does the output get replaced
+			return [this.helpers.returnJsonArray(returnData)];
+		}
 	}
 }
