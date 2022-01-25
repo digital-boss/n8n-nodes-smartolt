@@ -30,7 +30,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.1.2)',
+		description: 'Consume SmartOLT API (v0.1.3)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -243,8 +243,8 @@ export class SmartOlt implements INodeType {
 						responseData = await smartOltApiRequest.call(this,
 							'GET',
 							endpoint,
-							undefined,
-							undefined,
+							{},
+							{},
 							undefined,
 							encoding,
 						);
@@ -270,25 +270,33 @@ export class SmartOlt implements INodeType {
 					}
 				}
 
-				if (responseData.status === false) {
-					throw new NodeOperationError(this.getNode(), responseData.error);
-				} else {
-					responseData = simplify(responseData);
+				if (operation !== 'getOnuTrafficGraphByOnuUniqueExternalId') {
+					if (responseData.status === false) {
+						throw new NodeOperationError(this.getNode(), responseData.error);
+					} else {
+						responseData = simplify(responseData);
+					}
 				}
 
 				if (Array.isArray(responseData)) {
 					returnData.push.apply(returnData, responseData as IDataObject[]);
-				} else {
+				} else if (responseData !== undefined) {
 					returnData.push(responseData as IDataObject);
 				}
-			} catch (error) {
+			}  catch (error) {
 				if (this.continueOnFail()) {
-					returnData.push({ error: error.message });
+					// Return the actual reason as error
+					if (operation === 'getOnuTrafficGraphByOnuUniqueExternalId') {
+						items[i].json = { error: error.message };
+					} else {
+						returnData.push({ error: error.message });
+					}
 					continue;
 				}
 				throw error;
 			}
 		}
+
 		if (operation === 'getOnuTrafficGraphByOnuUniqueExternalId') {
 			// For file downloads the files get attached to the existing items
 			return this.prepareOutputData(items);
