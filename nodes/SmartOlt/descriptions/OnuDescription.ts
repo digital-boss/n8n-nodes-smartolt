@@ -105,7 +105,7 @@ export const onuFields: INodeProperties[] = [
 	},
 
 	/*-------------------------------------------------------------------------- */
-	/*                 	 onu:getUnconfiguredByOltUniqueId        			 */
+	/*                 	 onu:getUnconfiguredByOltUniqueId        			 	 */
 	/* ------------------------------------------------------------------------- */
 
 	{
@@ -526,6 +526,22 @@ export const onuFields: INodeProperties[] = [
 			},
 		},
 		default: '',
+	},
+	{
+		displayName: 'Convert Text To Json',
+		name: 'convertTextToJson',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getOnuFullStatusInfoByOnuUniqueExternalID',
+				],
+			},
+		},
+		default: false,
 	},
 
 	/*-------------------------------------------------------------------------- */
