@@ -30,7 +30,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.1.9)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.2.0)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -241,22 +241,22 @@ export class SmartOlt implements INodeType {
 							const json: IDataObject = {};
 							json['tables'] = [];
 							const responseLines = text.trim().split('\n');
-							let lastLinePropertyName = 'header';
+							let lastLinePropertyName = '';
 							let property = [];
 							let j = 0;
-							for (let i = 0; i < responseLines.length; i++) {
+							for (let i = 1; i < responseLines.length; i++) {
 								if(responseLines[i].includes(':')) {
 									// the line is a property
 									property = responseLines[i].split(':');
 									lastLinePropertyName = property[0].trim();
 									const lastLinePropertyValue = property[1].trim();
 									json[lastLinePropertyName] = lastLinePropertyValue;
-									j = 0;
 								} else {
 									// the line is part of a table
 									responseLines[i] = responseLines[i]
 										.replace('Port type', 'PortType')
 										.replace('MAC TYPE', 'MAC_TYPE')
+										.split(' /').join('/') // equal to replace all
 										.trim();
 									// @ts-ignore
 									json['tables'][j] = [];
