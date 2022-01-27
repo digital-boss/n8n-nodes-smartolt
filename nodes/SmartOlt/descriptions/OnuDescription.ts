@@ -528,7 +528,7 @@ export const onuFields: INodeProperties[] = [
 		default: '',
 	},
 	{
-		displayName: 'Convert Text To Json',
+		displayName: 'Convert Text To JSON',
 		name: 'convertTextToJson',
 		type: 'boolean',
 		displayOptions: {

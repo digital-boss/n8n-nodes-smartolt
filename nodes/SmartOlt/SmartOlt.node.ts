@@ -30,7 +30,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.1.6)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.1.7)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -243,7 +243,7 @@ export class SmartOlt implements INodeType {
 							json.tablesData = [] as IDataObject[];
 							const responseLines = text.trim().split('\n');
 							let j = 0;
-							for (let i = 1; i < responseLines.length; i++) {
+							for (let i = 0; i < responseLines.length; i++) {
 								if(responseLines[i].includes(':')) {
 									const property = responseLines[i].split(':');
 									json[property[0].trim()] = property[1].trim();
@@ -251,35 +251,36 @@ export class SmartOlt implements INodeType {
 									responseLines[i] = responseLines[i]
 										.replace('Port type', 'PortType')
 										.replace('MAC TYPE', 'MAC_TYPE');
-									(json['tablesData'] as IDataObject[])[j] = responseLines[i].trim().split(/\s+/);
+									(json['data'] as IDataObject[])[j] = responseLines[i].trim().split(/\s+/);
+									// (json['tablesData'] as IDataObject[])[j] = responseLines[i].trim().split(/\s+/);
 									j++;
 								}
 							}
 
-							// @ts-ignore
-							if ((json['tablesData'] as IDataObject).length > 0) {
-								// @ts-ignore
-								let labels = json['tablesData'][0] as string[]; // get the labels from the first line of the table
-								let br = 0; // br for the number of tables
-								for (let i = 1; i < (json['tablesData'] as IDataObject[]).length; i++) {
-									// @ts-ignore
-									if (json['tablesData'][i].length === labels.length) {
-										// Add the label properties with the row values
-										// @ts-ignore
-										json['tables'][br] = [];
-										for (let j = 0; j < labels.length; j++) {
-											// @ts-ignore
-											json['tables'][br][labels[j]] = json['tablesData'][i][j];
-										}
-									} else {
-										// Next table with new labels
-										// @ts-ignore
-										labels = json['tablesData'][i];
-										br++;
-									}
-								}
-							}
-							delete json.tablesData;
+							// // @ts-ignore
+							// if ((json['tablesData'] as IDataObject).length > 0) {
+							// 	// @ts-ignore
+							// 	let labels = json['tablesData'][0] as string[]; // get the labels from the first line of the table
+							// 	let br = 0; // br for the number of tables
+							// 	for (let i = 1; i < (json['tablesData'] as IDataObject[]).length; i++) {
+							// 		// @ts-ignore
+							// 		if (json['tablesData'][i].length === labels.length) {
+							// 			// Add the label properties with the row values
+							// 			// @ts-ignore
+							// 			json['tables'][br] = [];
+							// 			for (let j = 0; j < labels.length; j++) {
+							// 				// @ts-ignore
+							// 				json['tables'][br][labels[j]] = json['tablesData'][i][j];
+							// 			}
+							// 		} else {
+							// 			// Next table with new labels
+							// 			// @ts-ignore
+							// 			labels = json['tablesData'][i];
+							// 			br++;
+							// 		}
+							// 	}
+							// }
+							// delete json.tablesData;
 
 							responseData = json;
 						}
