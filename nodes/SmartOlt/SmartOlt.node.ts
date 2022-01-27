@@ -30,7 +30,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.1.7)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.1.8)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -239,8 +239,9 @@ export class SmartOlt implements INodeType {
 						if (convertTextToJson) {
 							const text = responseData.full_status_info;
 							const json: IDataObject = {};
-							json.tables = [] as IDataObject[];
-							json.tablesData = [] as IDataObject[];
+							// json.tables = [] as IDataObject[];
+							// json.tablesData = [] as IDataObject[];
+							json.data = [] as IDataObject[];
 							const responseLines = text.trim().split('\n');
 							let j = 0;
 							for (let i = 0; i < responseLines.length; i++) {
