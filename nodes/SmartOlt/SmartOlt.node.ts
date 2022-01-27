@@ -30,7 +30,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.1)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.2.2)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -241,14 +241,13 @@ export class SmartOlt implements INodeType {
 							const json: IDataObject = {};
 							json['tables'] = [];
 							const responseLines = text.trim().split('\n');
-							let lastLinePropertyName = '';
 							let property = [];
 							let j = 0;
 							for (let i = 1; i < responseLines.length; i++) {
 								if(responseLines[i].includes(':')) {
 									// the line is a property
 									property = responseLines[i].split(':');
-									lastLinePropertyName = property[0].trim();
+									const lastLinePropertyName = property[0].trim();
 									const lastLinePropertyValue = property[1].trim();
 									json[lastLinePropertyName] = lastLinePropertyValue;
 								} else {
@@ -258,15 +257,8 @@ export class SmartOlt implements INodeType {
 										.replace('MAC TYPE', 'MAC_TYPE')
 										.split(' /').join('/') // equal to replace all
 										.trim();
-									// @ts-ignore
-									if (((json['tables'] as IDataObject[])[lastLinePropertyName]as string[]) === undefined) {
-										// @ts-ignore
-										json['tables'][lastLinePropertyName] = [];
-									}
-									// @ts-ignore
-									json['tables'][lastLinePropertyName].push(responseLines[i].split(/\s+/)); // split by any number of whitespaces
+									(json['tables'] as IDataObject[]).push(responseLines[i].split(/\s+/)); // split by any number of whitespaces
 									j++;
-									delete json[lastLinePropertyName]; // delete the property name outside the table
 								}
 							}
 
