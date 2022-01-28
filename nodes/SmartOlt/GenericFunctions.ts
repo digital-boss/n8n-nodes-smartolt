@@ -73,3 +73,21 @@ export function simplify(responseData: IDataObject, property = 'response'): IDat
 	}
 
 }
+
+/**
+ * Creates an object from arrays of labels and values
+ *
+ * @export
+ * @param Array<string> labels
+ * @param Array<string> data
+ * @returns IDataObject
+ */
+export function getObject(labels: string[], data: string[]): IDataObject {
+	const jsonData: IDataObject = {};
+	if(data) {
+		for (let i = 0; i < labels.length; i++) {
+			jsonData[labels[i]] = data[i];
+		}
+	}
+	return jsonData;
+}

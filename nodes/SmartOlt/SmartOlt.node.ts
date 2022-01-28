@@ -18,6 +18,7 @@ import {
 } from './descriptions';
 
 import {
+	getObject,
 	simplify,
 	smartOltApiRequest,
 } from './GenericFunctions';
@@ -30,7 +31,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.2)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.2.3)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -239,29 +240,51 @@ export class SmartOlt implements INodeType {
 						if (convertTextToJson) {
 							const text = responseData.full_status_info;
 							const json: IDataObject = {};
-							json['tables'] = [];
-							const responseLines = text.trim().split('\n');
-							let property = [];
-							let j = 0;
-							for (let i = 1; i < responseLines.length; i++) {
-								if(responseLines[i].includes(':')) {
-									// the line is a property
-									property = responseLines[i].split(':');
+							const responseRows = text.trim().split('\n');
+							let title = ''; // title of the section/table
+							let labels: string[] = [] as string[];
+							let labelsFlag = true; // weather it is a row of labels
+							let n = 0; // n-th label
+
+							for (let i = 1; i < responseRows.length; i++) {
+								if(responseRows[i].includes(':')) {
+									// the row is a property
+									const property = responseRows[i].split(':');
 									const lastLinePropertyName = property[0].trim();
 									const lastLinePropertyValue = property[1].trim();
-									json[lastLinePropertyName] = lastLinePropertyValue;
+									if (lastLinePropertyValue !== '') {
+										json[lastLinePropertyName] = lastLinePropertyValue;
+									} else {
+										labelsFlag = true;
+										title = lastLinePropertyName;
+										delete responseRows[i];
+									}
 								} else {
-									// the line is part of a table
-									responseLines[i] = responseLines[i]
+									// the row is part of a table
+									responseRows[i] = responseRows[i]
 										.replace('Port type', 'PortType')
 										.replace('MAC TYPE', 'MAC_TYPE')
-										.split(' /').join('/') // equal to replace all
+										.split(' /').join('/') // replace all ' /' with '/'
 										.trim();
-									(json['tables'] as IDataObject[]).push(responseLines[i].split(/\s+/)); // split by any number of whitespaces
-									j++;
+
+									const row = responseRows[i].split(/\s+/);
+
+									if (labelsFlag) {
+										// the row contains labels
+										labels = row as string[];
+										n = 0;
+										labelsFlag = false;
+									} else {
+										// the row contains data
+										if (json[title] === undefined) {
+											json[title] = [];
+										}
+										// @ts-ignore
+										json[title][n] = getObject(labels, row as string[]);
+										n++;
+									}
 								}
 							}
-
 							responseData = json;
 						}
 
