@@ -31,7 +31,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.5)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.2.6)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -246,7 +246,7 @@ export class SmartOlt implements INodeType {
 							let labels: string[] = [] as string[];
 							let labelsFlag = true; // weather it is a row of labels
 							let n = 0; // n-th label
-							let index = -1; // index of "History" array
+							// let index = -1; // index of "History" array
 
 							for (let i = 1; i < responseRows.length; i++) {
 								if(responseRows[i].includes(':')) {
@@ -259,39 +259,39 @@ export class SmartOlt implements INodeType {
 									if (lastLinePropertyValue !== '') {
 										// the value of the property is empty
 
-										// add "History" property to json
-										if (lastLinePropertyName === 'Index') {
-											// set history index with the last defined title
-
-											index++;
-											if (json[title] === undefined) {
-												json[title] = [];
-											}
-											if (json[title][index] === undefined) {
-												json[title][index] = {};
-												json[title][index][lastLinePropertyName] = lastLinePropertyValue;
-											}
-
-										} else if (lastLinePropertyName === 'DownTime'|| lastLinePropertyName === 'UpTime' || lastLinePropertyName === 'DownCause') {
-											// set the History[index] value with the last defined index
-
-											json[title][index][lastLinePropertyName] = lastLinePropertyValue;
-
-										} else {
-											json[lastLinePropertyName] = lastLinePropertyValue;
-										}
-
-										// // remove "History" property from json
-										// if (lastLinePropertyName === 'Index'
-										// 	|| lastLinePropertyName === 'DownTime'
-										// 	|| lastLinePropertyName === 'UpTime'
-										// 	|| lastLinePropertyName === 'DownCause'
-										// 	|| lastLinePropertyName === 'Name'
-										// ) {
-										// 	// do nothing
+										// // add "History" property to json
+										// if (lastLinePropertyName === 'Index') {
+										// 	// set history index with the last defined title
+										//
+										// 	index++;
+										// 	if (json[title] === undefined) {
+										// 		json[title] = [];
+										// 	}
+										// 	if (json[title][index] === undefined) {
+										// 		json[title][index] = {};
+										// 		json[title][index][lastLinePropertyName] = lastLinePropertyValue;
+										// 	}
+										//
+										// } else if (lastLinePropertyName === 'DownTime'|| lastLinePropertyName === 'UpTime' || lastLinePropertyName === 'DownCause') {
+										// 	// set the History[index] value with the last defined index
+										//
+										// 	json[title][index][lastLinePropertyName] = lastLinePropertyValue;
+										//
 										// } else {
 										// 	json[lastLinePropertyName] = lastLinePropertyValue;
 										// }
+
+										// remove "History" property from json
+										if (lastLinePropertyName === 'Index'
+											|| lastLinePropertyName === 'DownTime'
+											|| lastLinePropertyName === 'UpTime'
+											|| lastLinePropertyName === 'DownCause'
+											|| lastLinePropertyName === 'Name'
+										) {
+											// do nothing
+										} else {
+											json[lastLinePropertyName] = lastLinePropertyValue;
+										}
 
 									} else {
 										// the value of the property is not empty
