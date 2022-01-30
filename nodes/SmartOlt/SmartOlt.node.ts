@@ -31,7 +31,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.3)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.2.4)', // todo: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -229,57 +229,121 @@ export class SmartOlt implements INodeType {
 
 						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
 
-						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_full_status_info/${onuExternalId}`);
+						// responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_full_status_info/${onuExternalId}`);
+						//
+						// if (responseData.status === false) {
+						// 	throw new NodeOperationError(this.getNode(), responseData.error);
+						// }
 
-						if (responseData.status === false) {
-							throw new NodeOperationError(this.getNode(), responseData.error);
-						}
+						//todo
+						responseData = {
+							full_status_info: 'Copyright(C) Huawei Technologies Co., Ltd. 2002-2016. All rights reserved.\nLogin  Time : 2019-02-19 08:44:21+08:00\nLogout Time : 2019-02-19 08:44:23+08:00\nOptical status:\nModule type                            : GPON\nModule sub-type                        : CLASS B+\nRx optical power(dBm)                  : -23.37\nTx optical power(dBm)                  : 1.91\nTemperature(C)                         : 48\nOLT Rx ONT optical power(dBm)          : -28.54\nCATV Rx optical power(dBm)             : -\nONT-ID                  : 0\nControl flag            : active\nRun state               : online\nMatch state             : mismatch\nONT distance(m)         : 1945\nCPU occupation          : 1%\nManagement mode         : OMCI\nDescription             : ONU_Customer_name_zone_Zone_1_descr\nLast down cause         : dying-gasp\nLast up time            : 2019-02-15 07:50:06+08:00\nLast down time          : 2019-02-15 07:49:01+08:00\nLast dying gasp time    : 2019-02-15 07:49:01+08:00\nONT online duration     : 4 day(s), 0 hour(s), 54 minute(s), 24 second(s) \nInteroperability-mode   : ITU-T\nLine profile ID      : 1\nLine profile name    : SMARTOLT_FLEXIBLE_GPON\nMapping mode        :802.1p PRI\nService profile ID   : 34\nService profile name : HS8545M\nRing check switch                 : Enable\nRing port auto-shutdown           : Enable\nHistory:\nIndex               : 10\nUpTime              : 2019-02-15 07:50:02+08:00\nIndex               : 9\nUpTime              : 2019-02-15 07:46:20+08:00\nDownTime            : 2019-02-15 07:49:01+08:00\nDownCause           : PowerFail\nIndex               : 8\nUpTime              : 2019-02-14 17:55:00+08:00\nDownTime            : 2019-02-15 06:49:58+08:00\nDownCause           : PowerFail\nIndex               : 7\nUpTime              : 2019-02-14 01:24:53+08:00\nDownTime            : 2019-02-14 17:54:46+08:00\nDownCause           : ONT LOSi/LOBi alarm\nIndex               : 6\nUpTime              : 2019-02-10 22:20:26+08:00\nDownTime            : 2019-02-14 01:24:00+08:00\nDownCause           : PowerFail\nIndex               : 5\nUpTime              : 2019-02-07 09:44:07+08:00\nDownTime            : 2019-02-10 19:38:31+08:00\nDownCause           : PowerFail\nIndex               : 4\nUpTime              : 2019-02-02 02:36:32+08:00\nDownTime            : 2019-02-07 09:42:48+08:00\nDownCause           : PowerFail\nIndex               : 3\nUpTime              : 2019-02-01 21:50:01+08:00\nDownTime            : 2019-02-02 02:35:33+08:00\nDownCause           : PowerFail\nIndex               : 2\nUpTime              : 2019-01-27 16:48:24+08:00\nDownTime            : 2019-02-01 21:48:58+08:00\nDownCause           : PowerFail\nIndex               : 1\nUpTime              : 2019-01-26 22:16:42+08:00\nDownTime            : 2019-01-27 16:28:00+08:00\nDownCause           : PowerFail\nIndex                      : 1\nName                       : 1_INTERNET_R_VID_20\nService type               : Internet\nConnection type            : IP routed\nIPv4 Connection status     : Connected\nIPv4 access type           : PPPoE\nIPv4 address               : 10.13.1.178\nSubnet mask                : 255.255.255.255\nDefault gateway            : 192.168.38.1\nManage VLAN                : 20\nManage priority            : 0\nMAC address                : 0087-C6AA-082A\nIPv4 switch                : Enable\nIPv6 Connection status     : Invalid\nInterfaces status:\nONT-ID   ONT Port type Speed(Mbps)   Duplex   LinkState  RingStatus\n0         1         GE -             -        down       noloop    \n0         2         FE -             -        down       noloop    \n0         3         FE -             -        down       noloop    \n0         4         FE -             -        down       noloop    \nVoIP status:\nOnline MACs on this ONU:\nSRVPort  TYPE MAC            MAC TYPE F /S /P  ONTID VCI   VLAN ID\n4     -  gpon 0007-c49a-083a dynamic  0 /1 /2   0    1             20\n',
+							// full_status_info: 'Copyright(C) Huawei Technologies Co., Ltd. 2002-2016. All rights reserved.\nLogin  Time : 2019-02-19 08:44:21+08:00\nLogout Time : 2019-02-19 08:44:23+08:00\nIndex : 4 \nIndex : 3 \nDownCause : ONT LOSi/LOBi alarm \nIndex : 2 \nDownCause : ONT LOSi/LOBi alarm \nIndex : 1 \nDownCause : ONT link-down ',
+							// tslint:disable-next-line:no-any
+						} as any;
 
 						const convertTextToJson = this.getNodeParameter('convertTextToJson', i) as boolean;
 
 						if (convertTextToJson) {
 							const text = responseData.full_status_info;
-							const json: IDataObject = {};
+							// tslint:disable-next-line:no-any
+							const json: any = {};
 							const responseRows = text.trim().split('\n');
 							let title = ''; // title of the section/table
 							let labels: string[] = [] as string[];
 							let labelsFlag = true; // weather it is a row of labels
 							let n = 0; // n-th label
+							let index = -1; // index of "History" array
 
 							for (let i = 1; i < responseRows.length; i++) {
 								if(responseRows[i].includes(':')) {
 									// the row is a property
+
 									const property = responseRows[i].split(':');
 									const lastLinePropertyName = property[0].trim();
 									const lastLinePropertyValue = property[1].trim();
+
 									if (lastLinePropertyValue !== '') {
-										json[lastLinePropertyName] = lastLinePropertyValue;
+										// the value of the property is empty
+
+										// add "History" property to json
+										if (lastLinePropertyName === 'Index') {
+											// set history index with the last defined title
+
+											index++;
+											if (json[title] === undefined) {
+												json[title] = [];
+											}
+											if (json[title][index] === undefined) {
+												json[title][index] = {};
+												json[title][index][lastLinePropertyName] = lastLinePropertyValue;
+											}
+
+										} else if (lastLinePropertyName === 'DownTime'|| lastLinePropertyName === 'UpTime' || lastLinePropertyName === 'DownCause') {
+											// set the History[index] value with the last defined index
+
+											json[title][index][lastLinePropertyName] = lastLinePropertyValue;
+
+										} else {
+											json[lastLinePropertyName] = lastLinePropertyValue;
+										}
+
+										// // remove "History" property from json
+										// if (lastLinePropertyName === 'Index'
+										// 	|| lastLinePropertyName === 'DownTime'
+										// 	|| lastLinePropertyName === 'UpTime'
+										// 	|| lastLinePropertyName === 'DownCause'
+										// 	|| lastLinePropertyName === 'Name'
+										// ) {
+										// 	// do nothing
+										// } else {
+										// 	json[lastLinePropertyName] = lastLinePropertyValue;
+										// }
+
 									} else {
+										// the value of the property is not empty
+
 										labelsFlag = true;
 										title = lastLinePropertyName;
 										delete responseRows[i];
 									}
 								} else {
 									// the row is part of a table
-									responseRows[i] = responseRows[i]
-										.replace('Port type', 'PortType')
-										.replace('MAC TYPE', 'MAC_TYPE')
-										.split(' /').join('/') // replace all ' /' with '/'
-										.trim();
 
-									const row = responseRows[i].split(/\s+/);
-
+									let row;
 									if (labelsFlag) {
 										// the row contains labels
+
+										row = responseRows[i]
+											.replace('Port type', 'PortType')
+											.replace('MAC TYPE', 'MACTYPE')
+											.replace('VLAN ID', 'VLANID')
+											.split(' /').join('/') // replace all ' /' with '/'
+											.trim()
+											.split(/\s+/); // split by one or multiple whitespaces
+
 										labels = row as string[];
 										n = 0;
 										labelsFlag = false;
+
 									} else {
 										// the row contains data
+
+										row = responseRows[i];
+
+										if (title === 'Online MACs on this ONU') {
+											row = row
+												.split(' /').join('/') // replace all ' /' with '/'
+												.replace(' - ', ' '); // remove the dash in the data
+										}
+
+										row = row
+											.trim()
+											.split(/\s+/); // split by one or multiple whitespaces
+
 										if (json[title] === undefined) {
 											json[title] = [];
 										}
-										// @ts-ignore
 										json[title][n] = getObject(labels, row as string[]);
 										n++;
 									}
