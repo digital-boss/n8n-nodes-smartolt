@@ -1,6 +1,6 @@
 {
     "name": "@digital-boss/n8n-nodes-smartolt",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "A node consuming the SmartOlt API.",
     "license": "SEE LICENSE IN LICENSE.md",
     "homepage": "https://n8n.io",
