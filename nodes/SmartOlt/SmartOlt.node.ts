@@ -31,7 +31,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.8)', // TODO: increase with every version
+		description: 'Consume SmartOLT API (v0.2.9)', // TODO: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -238,7 +238,16 @@ export class SmartOlt implements INodeType {
 						const convertTextToJson = this.getNodeParameter('convertTextToJson', i) as boolean;
 
 						if (convertTextToJson) {
-							const text = responseData.full_status_info;
+							let text = responseData.full_status_info;
+
+							try {
+								const dateTimeRegex = new RegExp(/\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/); // get the second part of 20/06/2021 09:33:57+03:00
+								const dateTimeIndex = text.match(dateTimeRegex).index; // get the starting index
+								text = text.substring(0, dateTimeIndex).trimEnd() + text.substring(dateTimeIndex); // trim the whitespace before it
+							} catch (e) {
+								// don't throw error if regex doesn't match
+							}
+
 							// tslint:disable-next-line:no-any
 							const json: any = {};
 							const responseRows = text.trim().split('\n');
@@ -249,10 +258,7 @@ export class SmartOlt implements INodeType {
 							let index = -1; // index of "History" array
 
 							for (let i = 1; i < responseRows.length; i++) {
-								if( // has white space at at least one side
-									responseRows[i].match(/:\s/) != null ||
-									responseRows[i].match(/\s:/) != null
-								) {
+								if(responseRows[i].includes(':')) {
 									// the row is a property
 
 									const property = responseRows[i].split(':');
