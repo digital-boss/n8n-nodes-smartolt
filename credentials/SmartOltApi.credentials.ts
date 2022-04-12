@@ -1,23 +1,26 @@
 import {
-	ICredentialType, INodeProperties,
-	NodePropertyTypes,
+	ICredentialType,
+	INodeProperties,
 } from 'n8n-workflow';
 
 export class SmartOltApi implements ICredentialType {
 	name = 'smartOltApi';
 	displayName = 'Smart OLT API';
 	documentationUrl = 'smartOlt';
-	properties = [
+	properties: INodeProperties[] = [
 		{
 			displayName: 'URL',
 			name: 'url',
-			type: 'string' as NodePropertyTypes,
+			type: 'string',
 			default: '',
 		},
 		{
 			displayName: 'API Key',
 			name: 'apiKey',
-			type: 'string' as NodePropertyTypes,
+			type: 'string',
+			typeOptions: {
+				password: true,
+			},
 			default: '',
 		},
 	];

@@ -31,7 +31,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.7)', // todo: increase with every version
+		description: 'Consume SmartOLT API (v0.2.8)', // TODO: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -249,7 +249,10 @@ export class SmartOlt implements INodeType {
 							let index = -1; // index of "History" array
 
 							for (let i = 1; i < responseRows.length; i++) {
-								if(responseRows[i].includes(':')) {
+								if( // has white space at at least one side
+									responseRows[i].match(/:\s/) != null ||
+									responseRows[i].match(/\s:/) != null
+								) {
 									// the row is a property
 
 									const property = responseRows[i].split(':');
