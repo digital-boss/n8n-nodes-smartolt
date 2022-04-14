@@ -31,7 +31,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.9)', // TODO: increase with every version
+		description: 'Consume SmartOLT API (v0.2.10)', // TODO: increase with every version
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
@@ -242,8 +242,15 @@ export class SmartOlt implements INodeType {
 
 							try {
 								const dateTimeRegex = new RegExp(/\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/); // get the second part of 20/06/2021 09:33:57+03:00
-								const dateTimeIndex = text.match(dateTimeRegex).index; // get the starting index
-								text = text.substring(0, dateTimeIndex).trimEnd() + text.substring(dateTimeIndex); // trim the whitespace before it
+								const match = dateTimeRegex.exec(text);
+								// @ts-ignore
+								const dateTimeIndex = match.index; // get the starting index
+								// @ts-ignore
+								const length = match[0].length;
+
+								text = text.substring(0,dateTimeIndex) +
+									text.substring(dateTimeIndex, dateTimeIndex + length).replace(/:/g, '.') + // replace with dots
+									text.substring(dateTimeIndex + length);
 							} catch (e) {
 								// don't throw error if regex doesn't match
 							}
