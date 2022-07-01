@@ -2,7 +2,7 @@
     "name": "@digital-boss/n8n-nodes-smartolt",
     "version": "0.2.10",
     "description": "A node consuming the SmartOlt API.",
-    "license": "SEE LICENSE IN LICENSE.md",
+    "license": "MIT",
     "homepage": "https://n8n.io",
     "author": {
         "name": "Valentina Lilova",
