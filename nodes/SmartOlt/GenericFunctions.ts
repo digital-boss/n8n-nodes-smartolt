@@ -65,7 +65,7 @@ export async function smartOltApiRequest(this: IHookFunctions | IExecuteFunction
  * @returns IDataObject
  */
 export function simplify(responseData: IDataObject, property = 'response'): IDataObject {
-	if (Object.keys(responseData[property] as IDataObject).length !== 0) {
+	if (responseData[property] && Object.keys(responseData[property] as IDataObject).length !== 0) {
 		// if responseData[property] is not empty
 		return responseData[property] as IDataObject;
 	} else {
