@@ -15,10 +15,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm run watch",
-    "build": "tsc && gulp",
+    "build": "genversion -s -e nodes/version.ts && git add . && tsc && gulp",
     "tslint": "tslint -p tsconfig.json -c tslint.json",
     "watch": "tsc --watch",
-    "test": "jest"
+    "test": "jest",
+    "version": "npm run build",
+    "postversion": "git push"
   },
   "files": [
     "dist"
@@ -36,6 +38,7 @@
     "@types/jest": "^26.0.13",
     "@types/node": "14.17.27",
     "@types/request-promise-native": "~1.0.15",
+    "genversion": "^3.1.1",
     "gulp": "^4.0.0",
     "jest": "^26.4.2",
     "n8n-workflow": "~0.79.0",

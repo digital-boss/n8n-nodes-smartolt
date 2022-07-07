@@ -23,6 +23,8 @@ import {
 	smartOltApiRequest,
 } from './GenericFunctions';
 
+import { version } from '../version';
+
 export class SmartOlt implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'SmartOLT',
@@ -31,7 +33,7 @@ export class SmartOlt implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Consume SmartOLT API (v0.2.10)', // TODO: increase with every version
+		description: `Consume SmartOLT API (v${version})`,
 		defaults: {
 				name: 'SmartOlt',
 				color: '#018FFB',
