@@ -59,6 +59,22 @@ export const onuOperations: INodeProperties[] = [
 				name: 'Get ONU Traffic Graph By ONU Unique External ID',
 				value: 'getOnuTrafficGraphByOnuUniqueExternalId',
 			},
+			{
+				name: 'Disable ONU by ONU unique external ID',
+				value: 'disableOnuForASpecifiedOnuUniqueExternalId',
+			},
+			{
+				name: 'Enable ONU by ONU unique external ID',
+				value: 'enableOnuByOnuUniqueExternalId',
+			},
+			{
+				name: 'Get ONU status by ONU unique external ID',
+				value: 'getOnuStatusByOnuUniqueExternalId',
+			},
+			{
+				name: 'Get ONU administrative status by ONU unique external ID',
+				value: 'getOnuAdministrativeStatusByOnuUniqueExternalId',
+			},
 		],
 		default: 'getAllUnconfigured',
 	},
@@ -813,4 +829,31 @@ export const onuFields: INodeProperties[] = [
 		description: 'Name of the binary property to which to write the data of the read file',
 	},
 
+	/*-------------------------------------------------------------------------- */
+	/*   	 				onu:disableOnuForASpecifiedOnuUniqueExternalId								 */
+	/*   	 							onu:enableOnuByOnuUniqueExternalId											 */
+	/*   	 						onu:getOnuStatusByOnuUniqueExternalId											 */
+	/*   	 				onu:getOnuAdministrativeStatusByOnuUniqueExternalId						 */
+	/* ------------------------------------------------------------------------- */
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		required: true,
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'disableOnuForASpecifiedOnuUniqueExternalId',
+					'enableOnuByOnuUniqueExternalId',
+					'getOnuStatusByOnuUniqueExternalId',
+					'getOnuAdministrativeStatusByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'ONU unique external ID. The ONU external ID can contain only alphanumeric characters.',
+	},
 ];

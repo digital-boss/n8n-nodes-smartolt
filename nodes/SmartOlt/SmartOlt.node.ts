@@ -443,6 +443,56 @@ export class SmartOlt implements INodeType {
 
 						items[i].binary![binaryPropertyName] = await this.helpers.prepareBinaryData(responseData, endpoint);
 
+					} else if (operation === 'disableOnuForASpecifiedOnuUniqueExternalId') {
+						// Disable ONU for a specified ONU unique external ID <https://api.smartolt.com/#22e14a03-1c8c-4335-8439-41ef87b0bc41>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as IDataObject;
+
+						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/disable/${onuExternalId}`);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
+
+					} else if (operation === 'enableOnuByOnuUniqueExternalId') {
+						// Enable ONU by ONU unique external ID <https://api.smartolt.com/#393d530b-5d69-4d25-9a2b-130282097b23>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as IDataObject;
+
+						responseData = await smartOltApiRequest.call(this, 'POST', `/onu/enable/${onuExternalId}`);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
+
+					} else if (operation === 'getOnuStatusByOnuUniqueExternalId') {
+						// Get ONU status by ONU unique external ID <https://api.smartolt.com/#8b411df2-20c4-4249-9897-695d06b4b0ab>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as IDataObject;
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_status/${onuExternalId}`);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
+					} else if (operation === 'getOnuAdministrativeStatusByOnuUniqueExternalId') {
+						// Get ONU administrative status by ONU unique external ID <https://api.smartolt.com/#310c143b-3240-4842-9843-ad052aa88461>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as IDataObject;
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_administrative_status/${onuExternalId}`);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
 					}
 				}
 
