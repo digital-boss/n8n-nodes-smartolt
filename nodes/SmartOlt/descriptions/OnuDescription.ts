@@ -75,6 +75,10 @@ export const onuOperations: INodeProperties[] = [
 				name: 'Get ONU administrative status by ONU unique external ID',
 				value: 'getOnuAdministrativeStatusByOnuUniqueExternalId',
 			},
+			{
+				name: 'Get ONU speed profiles by ONU unique external ID',
+				value: 'getOnuSpeedProfilesByOnuUniqueExternalId',
+			},
 		],
 		default: 'getAllUnconfigured',
 	},
@@ -834,6 +838,7 @@ export const onuFields: INodeProperties[] = [
 	/*   	 							onu:enableOnuByOnuUniqueExternalId											 */
 	/*   	 						onu:getOnuStatusByOnuUniqueExternalId											 */
 	/*   	 				onu:getOnuAdministrativeStatusByOnuUniqueExternalId						 */
+	/*   	 						onu:getOnuSpeedProfilesByOnuUniqueExternalId						 	 */
 	/* ------------------------------------------------------------------------- */
 	{
 		displayName: 'ONU External ID',
@@ -850,6 +855,7 @@ export const onuFields: INodeProperties[] = [
 					'enableOnuByOnuUniqueExternalId',
 					'getOnuStatusByOnuUniqueExternalId',
 					'getOnuAdministrativeStatusByOnuUniqueExternalId',
+					'getOnuSpeedProfilesByOnuUniqueExternalId',
 				],
 			},
 		},

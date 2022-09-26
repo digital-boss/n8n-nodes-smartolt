@@ -13,6 +13,7 @@ export class SmartOltApi implements ICredentialType {
 			name: 'url',
 			type: 'string',
 			default: '',
+			description: 'Example: https://{{subdomain}}.smartolt.com/api',
 		},
 		{
 			displayName: 'API Key',

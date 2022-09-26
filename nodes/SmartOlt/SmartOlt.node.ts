@@ -493,6 +493,18 @@ export class SmartOlt implements INodeType {
 						} else {
 							responseData = simplify(responseData);
 						}
+					} else if (operation === 'getOnuSpeedProfilesByOnuUniqueExternalId') {
+						// Get ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#310c143b-3240-4842-9843-ad052aa88461>
+
+						const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+
+						responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_speed_profiles/${onuExternalId}`);
+
+						if (responseData.status === false) {
+							throw new NodeOperationError(this.getNode(), responseData.error);
+						} else {
+							responseData = simplify(responseData);
+						}
 					}
 				}
 
