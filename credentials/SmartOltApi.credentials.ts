@@ -24,5 +24,12 @@ export class SmartOltApi implements ICredentialType {
 			},
 			default: '',
 		},
+		{
+			displayName: 'Testing Mode',
+			name: 'testingMode',
+			type: 'boolean',
+			default: false,
+			description: 'Return the request options without sending it. Used by developers to debug issues with the node.',
+		},
 	];
 }

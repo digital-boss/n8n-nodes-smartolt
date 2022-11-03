@@ -50,8 +50,16 @@ export async function smartOltApiRequest(this: IHookFunctions | IExecuteFunction
 			options.encoding = null;
 		}
 
-		return this.helpers.request!(options);
-
+		if (credentials.testingMode) {
+			delete options.json;
+			return options;
+		} else {
+			const response = await this.helpers.request!(options);
+			if (typeof encoding === undefined && response.status === false) {
+				throw new NodeOperationError(this.getNode(), response.error);
+			}
+			return response;
+		}
 	} catch (error) {
 		throw new NodeApiError(this.getNode(), error);
 	}
@@ -59,10 +67,8 @@ export async function smartOltApiRequest(this: IHookFunctions | IExecuteFunction
 
 /**
  * Simplifies the output
- *
- * @export
- * @param IDataObject responseData
- * @returns IDataObject
+ * @param responseData
+ * @param property
  */
 export function simplify(responseData: IDataObject, property = 'response'): IDataObject {
 	if (responseData[property] && Object.keys(responseData[property] as IDataObject).length !== 0) {
@@ -76,11 +82,8 @@ export function simplify(responseData: IDataObject, property = 'response'): IDat
 
 /**
  * Creates an object from arrays of labels and values
- *
- * @export
- * @param Array<string> labels
- * @param Array<string> data
- * @returns IDataObject
+ * @param labels
+ * @param data
  */
 export function getObject(labels: string[], data: string[]): IDataObject {
 	const jsonData: IDataObject = {};
