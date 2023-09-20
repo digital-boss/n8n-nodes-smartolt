@@ -31,13 +31,49 @@ export const onuOperations: INodeProperties[] = [
 				description: 'Authorizes an ONU on the provided OLT. If board or port are left empty then the ONU is saved for later authorization.',
 			},
 			{
+				name: 'Set ONU Mgmt IP mode to DHCP by ONU unique external ID',
+				value: 'setOnuMgmtIPModeToDhcpByOnuUniqueExternalId',
+			},
+			{
+				name: 'Enable ONU TR069 by ONU unique external ID',
+				value: 'enableOnuTr069ByOnuUniqueExternalId',
+			},
+			{
+				name: 'Set ONU WAN mode to DHCP by ONU unique external ID',
+				value: 'setOnuWanModeToDhcpByOnuUniqueExternalId',
+			},
+			{
+				name: 'Set ONU WAN mode to PPPoE by ONU unique external ID',
+				value: 'setOnuWanModeToPppoeByOnuUniqueExternalId',
+			},
+			{
+				name: 'Set ONU WiFi port mode to LAN by ONU unique external',
+				value: 'setOnuWiFiPortModeToLanByOnuUniqueExternal',
+			},
+			{
+				name: 'Set ONU WiFi port mode to Access by ONU unique',
+				value: 'setOnuWifiPortModeToAccessByOnuUnique',
+			},
+			{
+				name: 'Shutdown ONU WiFi port by ONU unique external ID',
+				value: 'shutdownOnuWifiPortByOnuUniqueExernalId',
+			},
+			{
+				name: 'Reboot ONU by ONU unique external ID',
+				value: 'rebootOnuByOnuUniqueExternalId',
+			},
+			{
+				name: 'Resync ONU config by ONU unique external ID',
+				value: 'resyncOnuConfigByOnuUniqueExternalId',
+			},
+			{
 				name: 'Update ONU Speed Profiles By ONU Unique External ID',
 				value: 'updateOnuSpeedProfilesByOnuUniqueExternalId',
 				description: 'At least one speed profile name must be provided. The profile names must be the ones defined in SmartOLT Speed Profiles section.',
 			},
 			{
 				name: 'Get ONU Full Status Info By ONU Unique External ID',
-				value: 'getOnuFullStatusInfoByOnuUniqueExternalID',
+				value: 'getOnuFullStatusInfoByOnuUniqueExternalId',
 			},
 			{
 				name: 'Set ONU Ethernet Port Mode To Transparent By ONU Unique External ID',
@@ -66,6 +102,10 @@ export const onuOperations: INodeProperties[] = [
 			{
 				name: 'Enable ONU by ONU unique external ID',
 				value: 'enableOnuByOnuUniqueExternalId',
+			},
+			{
+				name: 'Delete ONU by ONU unique external ID',
+				value: 'deleteOnuByOnuUniqueExternalId',
 			},
 			{
 				name: 'Get ONU status by ONU unique external ID',
@@ -467,6 +507,449 @@ export const onuFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Example: 100M',
+			},
+		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:setOnuMgmtIPModeToDhcpByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuMgmtIPModeToDhcpByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'VLAN',
+		name: 'vlan',
+		type: 'number',
+		required: true,
+		default: 0,
+		description: 'ONU Mgmt VLAN-ID',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuMgmtIPModeToDhcpByOnuUniqueExternalId',
+				],
+			},
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuMgmtIPModeToDhcpByOnuUniqueExternalId',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'CVLAN',
+				name: 'cvlan',
+				type: 'number',
+				default: 0,
+				description: 'ONU Mgmt CVLAN-ID',
+			},
+			{
+				displayName: 'SVLAN',
+				name: 'svlan',
+				type: 'number',
+				default: 0,
+				description: 'ONU Mgmt SVLAN-ID',
+			},
+			{
+				displayName: 'Tag Transform Mode',
+				name: 'tag_transform_mode',
+				type: 'options',
+				default: 'default',
+				description: 'Tag-transform mode',
+				options: [
+					{
+						name: 'default',
+						value: 'default',
+					},
+					{
+						name: 'translate',
+						value: 'translate',
+					},
+					{
+						name: 'translate-and-add',
+						value: 'translate-and-add',
+					},
+				],
+			},
+		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:enableOnuTr069ByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'enableOnuTr069ByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'enableOnuTr069ByOnuUniqueExternalId',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'tr069_profile',
+				name: 'tr069_profile',
+				type: 'string',
+				default: 0,
+				description: 'TR069 profile name',
+			},
+		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:setOnuWanModeToDhcpByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWanModeToDhcpByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWanModeToDhcpByOnuUniqueExternalId',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Configuration method',
+				name: 'configuration_method',
+				type: 'options',
+				default: 'default',
+				description: 'Configuration method',
+				options: [
+					{
+						name: 'OMCI',
+						value: 'omci',
+					},
+					{
+						name: 'TR069',
+						value: 'tr069',
+					},
+				],
+			},
+			{
+				displayName: 'ipv4ipv6',
+				name: 'ip_protocol',
+				type: 'options',
+				default: 'default',
+				description: 'IP protocol',
+				options: [
+					{
+						name: 'ipv4',
+						value: 'ipv4',
+					},
+					{
+						name: 'ipv6',
+						value: 'ipv6',
+					},
+				],
+			},
+			{
+				displayName: 'ipv6 Address Mode',
+				name: 'ipv6_address_mode',
+				type: 'options',
+				default: 'default',
+				description: 'IP Address Mode',
+				options: [
+					{
+						name: 'DHCPv6',
+						value: 'dhcpv6',
+					},
+					{
+						name: 'Auto',
+						value: 'auto',
+					},
+					{
+						name: 'Static',
+						value: 'static',
+					},
+					{
+						name: 'None',
+						value: 'none',
+					},
+				],
+			},
+			{
+				displayName: 'IPv6 address',
+				name: 'ipv6_address',
+				type: 'options',
+				default: 'default',
+				description: 'IPv6 address',
+			},
+			{
+				displayName: 'IPv6 gateway',
+				name: 'ipv6_gateway',
+				type: 'options',
+				default: 'default',
+				description: 'IPv6 gateway',
+			},
+			{
+				displayName: 'DHCPv6-PD',
+				name: 'ipv6_prefix_delegation_mode',
+				type: 'options',
+				default: 'default',
+				description: 'DHCPv6-PD',
+				options: [
+					{
+						name: 'DHCPv6',
+						value: 'dhcpv6',
+					},
+					{
+						name: 'Static',
+						value: 'static',
+					},
+					{
+						name: 'None',
+						value: 'none',
+					},
+				],
+			},
+			{
+				displayName: 'IPv6 prefix address',
+				name: 'ipv6_prefix_address',
+				type: 'options',
+				default: 'default',
+				description: 'IPv6 prefix address',
+			},
+		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:setOnuWanModeToPppoeByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWanModeToPppoeByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWanModeToPppoeByOnuUniqueExternalId',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Username',
+				name: 'username',
+				type: 'string',
+				default: 'default',
+				required: true,
+				description: 'PPPoE username. The username can contain only alphanumeric characters. A maximum of 64 characters is allowed',
+			},
+			{
+				displayName: 'Password',
+				name: 'password',
+				type: 'string',
+				default: 'default',
+				required: true,
+				description: 'PPPoE password. The password can contain only alphanumeric characters. A maximum of 64 characters is allowed',
+			},
+			{
+				displayName: 'Configuration method',
+				name: 'configuration_method',
+				type: 'options',
+				default: 'default',
+				description: 'Configuration method',
+				options: [
+					
+					{
+						name: 'OMCI',
+						value: 'omci',
+					},
+					{
+						name: 'TR069',
+						value: 'tr069',
+					},
+				],
+			},
+			{
+				displayName: 'ipv4ipv6',
+				name: 'ip_protocol',
+				type: 'options',
+				default: 'default',
+				description: 'IP protocol',
+				options: [
+					{
+						name: 'ipv4',
+						value: 'ipv4',
+					},
+					{
+						name: 'ipv6',
+						value: 'ipv6',
+					},
+				],
+			},
+			{
+				displayName: 'ipv6 Address Mode',
+				name: 'ipv6_address_mode',
+				type: 'options',
+				default: 'default',
+				description: 'IP Address Mode',
+				options: [
+					{
+						name: 'DHCPv6',
+						value: 'dhcpv6',
+					},
+					{
+						name: 'Auto',
+						value: 'auto',
+					},
+					{
+						name: 'Static',
+						value: 'static',
+					},
+					{
+						name: 'None',
+						value: 'none',
+					},
+				],
+			},
+			{
+				displayName: 'IPv6 address',
+				name: 'ipv6_address',
+				type: 'options',
+				default: 'default',
+				description: 'IPv6 address',
+			},
+			{
+				displayName: 'IPv6 gateway',
+				name: 'ipv6_gateway',
+				type: 'options',
+				default: 'default',
+				description: 'IPv6 gateway',
+			},
+			{
+				displayName: 'DHCPv6-PD',
+				name: 'ipv6_prefix_delegation_mode',
+				type: 'options',
+				default: 'default',
+				description: 'DHCPv6-PD',
+				options: [
+					{
+						name: 'DHCPv6',
+						value: 'dhcpv6',
+					},
+					{
+						name: 'Static',
+						value: 'static',
+					},
+					{
+						name: 'None',
+						value: 'none',
+					},
+				],
+			},
+			{
+				displayName: 'IPv6 prefix address',
+				name: 'ipv6_prefix_address',
+				type: 'options',
+				default: 'default',
+				description: 'IPv6 prefix address',
 			},
 		],
 	},
