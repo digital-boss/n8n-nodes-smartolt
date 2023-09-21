@@ -443,6 +443,52 @@ export class SmartOlt implements INodeType {
 								break;
 							}
 
+							case 'setOnuMgmtIPModeToDhcpByOnuUniqueExternalId': {
+								// Set ONU Mgmt IP mode to DHCP by ONU unique external ID <https://api.smartolt.com/#1a24a4f8-64cf-4da6-af66-112d0e4c3a8e>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_onu_mgmt_ip_dhcp/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'enableOnuTr069ByOnuUniqueExternalId': {
+								// Enable ONU TR069 by ONU unique external ID <https://api.smartolt.com/#d4dcce06-fff4-4d0e-a9f3-b38fb6ee6bbd>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.tr069_profile = this.getNodeParameter('tr069_profile', i) as string;
+								Object.assign(body);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/enable_tr069/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'setOnuWanModeToDhcpByOnuUniqueExternalId': {
+								// Set ONU WAN mode to DHCP by ONU unique external ID <https://api.smartolt.com/#11682489-4b03-4d4f-9773-1d04a51845ff>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_onu_wan_mode_dhcp/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'setOnuWanModeToPppoeByOnuUniqueExternalId': {
+								// Set ONU WAN mode to PPPoE by ONU unique external ID <https://api.smartolt.com/#95a4bdb5-9ecc-4a25-816a-acbd483616e2>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.username = this.getNodeParameter('username', i) as string;
+								body.password = this.getNodeParameter('password', i) as string;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_onu_wan_mode_pppoe/${onuExternalId}`, body);
+								break;
+							}
+
 							case 'updateOnuSpeedProfilesByOnuUniqueExternalId': {
 								// Update ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#6b753440-3567-8644-bfed-045dbfe3f248>
 
@@ -463,6 +509,64 @@ export class SmartOlt implements INodeType {
 								Object.assign(body, additionalFields);
 
 								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_ethernet_port_transparent/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'setOnuWiFiPortModeToLanByOnuUniqueExternalId': {
+								// Set ONU WiFi port mode to LAN by ONU unique external ID <https://api.smartolt.com/#a41dbe8e-fc8c-478d-ad1b-adbe5ff6a34a>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.wifi_port = this.getNodeParameter('wifi_port', i) as string;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_wifi_port_lan/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'setOnuWifiPortModeToAccessByOnuUniqueExternalId': {
+								// Set ONU WiFi port mode to Access by ONU unique external ID <https://api.smartolt.com/#9f00d7b7-f403-4f78-93de-85f0e051a45e>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.wifi_port = this.getNodeParameter('wifi_port', i) as string;
+								body.vlan = this.getNodeParameter('vlan', i) as number;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_wifi_port_access/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'shutdownOnuWifiPortByOnuUniqueExernalId': {
+								// Shutdown ONU WiFi port by ONU unique external ID <https://api.smartolt.com/#6eb0837b-29a4-4d14-bf73-aa22390f0bda>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.wifi_port = this.getNodeParameter('wifi_port', i) as string;
+								Object.assign(body);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/shutdown_wifi_port/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'rebootOnuByOnuUniqueExternalId': {
+								// Reboot ONU by ONU unique external ID <https://api.smartolt.com/#4f35a16a-59a1-43a8-b7be-987bf616a988>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/reboot/${onuExternalId}`);
+
+								responseData = simplify(responseData);
+								break;
+							}
+
+							case 'resyncOnuConfigByOnuUniqueExternalId': {
+								// Resync ONU config by ONU unique external ID <https://api.smartolt.com/#49ed152e-7ff3-41d7-9304-bc5369b46074>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/resync_config/${onuExternalId}`);
+
+								responseData = simplify(responseData);
 								break;
 							}
 
@@ -488,6 +592,16 @@ export class SmartOlt implements INodeType {
 								break;
 							}
 
+							case 'deleteOnuByOnuUniqueExternalId': {
+								// Delete ONU by ONU unique external ID <https://api.smartolt.com/#9f87942e-caa7-4711-85af-420be2bebaff>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/delete/${onuExternalId}`);
+
+								responseData = simplify(responseData);
+								break;
+							}
 						}
 						break;
 				}
