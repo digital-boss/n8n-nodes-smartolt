@@ -26,6 +26,38 @@ export const onuOperations: INodeProperties[] = [
 				description: 'Gets a list of all unconfigured ONUs for a specified OLT unique ID',
 			},
 			{
+				name: 'Get All ONUs Signals',
+				value: 'getAllOnusSignals',
+				description: 'Gets all the ONUs signals for a specified OLT ID, board, PON port or zone. If no OLT ID, board, PON port or zone is specified, then all the ONUs signals on all OLTs will be returned.',
+			},
+			{
+				name: 'Get All ONUs Details',
+				value: 'getAllOnusDetails',
+				description: 'Gets all the ONUs details for a specified OLT ID, board, PON port or zone. If no OLT ID, board, PON port or zone is specified, then all the ONUs details on all OLTs will be returned.\n' +
+					'The "Get all ONUs details" method is equivalent to an export of the entire database of ONU details and therefore it is not recommended to be used repeatedly, as the contained information does not change so often.\n' +
+					'Maximum recommended calls for "Get all ONUs details": 3 per hour (calls are blocked after the limit is reached).',
+			},
+			{
+				name: 'Get ONU status by ONU unique external ID',
+				value: 'getOnuStatusByOnuUniqueExternalId',
+			},
+			{
+				name: 'Get ONU administrative status by ONU unique external ID',
+				value: 'getOnuAdministrativeStatusByOnuUniqueExternalId',
+			},
+			{
+				name: 'Get ONU Full Status Info By ONU Unique External ID',
+				value: 'getOnuFullStatusInfoByOnuUniqueExternalId',
+			},
+			{
+				name: 'Get ONU Traffic Graph By ONU Unique External ID',
+				value: 'getOnuTrafficGraphByOnuUniqueExternalId',
+			},
+			{
+				name: 'Get ONU speed profiles by ONU unique external ID',
+				value: 'getOnuSpeedProfilesByOnuUniqueExternalId',
+			},
+			{
 				name: 'Authorize',
 				value: 'authorize',
 				description: 'Authorizes an ONU on the provided OLT. If board or port are left empty then the ONU is saved for later authorization.',
@@ -47,12 +79,21 @@ export const onuOperations: INodeProperties[] = [
 				value: 'setOnuWanModeToPppoeByOnuUniqueExternalId',
 			},
 			{
-				name: 'Set ONU WiFi port mode to LAN by ONU unique external',
-				value: 'setOnuWiFiPortModeToLanByOnuUniqueExternal',
+				name: 'Update ONU Speed Profiles By ONU Unique External ID',
+				value: 'updateOnuSpeedProfilesByOnuUniqueExternalId',
+				description: 'At least one speed profile name must be provided. The profile names must be the ones defined in SmartOLT Speed Profiles section.',
 			},
 			{
-				name: 'Set ONU WiFi port mode to Access by ONU unique',
-				value: 'setOnuWifiPortModeToAccessByOnuUnique',
+				name: 'Set ONU Ethernet Port Mode To Transparent By ONU Unique External ID',
+				value: 'setOnuEthernetPortModeToTransparentByOnuUniqueExternalId',
+			},
+			{
+				name: 'Set ONU WiFi port mode to LAN by ONU unique external ID',
+				value: 'setOnuWiFiPortModeToLanByOnuUniqueExternalId',
+			},
+			{
+				name: 'Set ONU WiFi port mode to Access by ONU unique external ID',
+				value: 'setOnuWifiPortModeToAccessByOnuUniqueExternalId',
 			},
 			{
 				name: 'Shutdown ONU WiFi port by ONU unique external ID',
@@ -67,35 +108,6 @@ export const onuOperations: INodeProperties[] = [
 				value: 'resyncOnuConfigByOnuUniqueExternalId',
 			},
 			{
-				name: 'Update ONU Speed Profiles By ONU Unique External ID',
-				value: 'updateOnuSpeedProfilesByOnuUniqueExternalId',
-				description: 'At least one speed profile name must be provided. The profile names must be the ones defined in SmartOLT Speed Profiles section.',
-			},
-			{
-				name: 'Get ONU Full Status Info By ONU Unique External ID',
-				value: 'getOnuFullStatusInfoByOnuUniqueExternalId',
-			},
-			{
-				name: 'Set ONU Ethernet Port Mode To Transparent By ONU Unique External ID',
-				value: 'setOnuEthernetPortModeToTransparentByOnuUniqueExternalId',
-			},
-			{
-				name: 'Get All ONUs Details',
-				value: 'getAllOnusDetails',
-				description: 'Gets all the ONUs details for a specified OLT ID, board, PON port or zone. If no OLT ID, board, PON port or zone is specified, then all the ONUs details on all OLTs will be returned.\n' +
-					'The "Get all ONUs details" method is equivalent to an export of the entire database of ONU details and therefore it is not recommended to be used repeatedly, as the contained information does not change so often.\n' +
-					'Maximum recommended calls for "Get all ONUs details": 3 per hour (calls are blocked after the limit is reached).',
-			},
-			{
-				name: 'Get All ONUs Signals',
-				value: 'getAllOnusSignals',
-				description: 'Gets all the ONUs signals for a specified OLT ID, board, PON port or zone. If no OLT ID, board, PON port or zone is specified, then all the ONUs signals on all OLTs will be returned.',
-			},
-			{
-				name: 'Get ONU Traffic Graph By ONU Unique External ID',
-				value: 'getOnuTrafficGraphByOnuUniqueExternalId',
-			},
-			{
 				name: 'Disable ONU by ONU unique external ID',
 				value: 'disableOnuForASpecifiedOnuUniqueExternalId',
 			},
@@ -106,18 +118,6 @@ export const onuOperations: INodeProperties[] = [
 			{
 				name: 'Delete ONU by ONU unique external ID',
 				value: 'deleteOnuByOnuUniqueExternalId',
-			},
-			{
-				name: 'Get ONU status by ONU unique external ID',
-				value: 'getOnuStatusByOnuUniqueExternalId',
-			},
-			{
-				name: 'Get ONU administrative status by ONU unique external ID',
-				value: 'getOnuAdministrativeStatusByOnuUniqueExternalId',
-			},
-			{
-				name: 'Get ONU speed profiles by ONU unique external ID',
-				value: 'getOnuSpeedProfilesByOnuUniqueExternalId',
 			},
 		],
 		default: 'getAllUnconfigured',
@@ -217,6 +217,229 @@ export const onuFields: INodeProperties[] = [
 				description: 'Search for a specific ONU type. Performed search is of type CONTAINS.',
 			},
 		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*   	 						onu:getAllOnusSignals  					   	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getAllOnusSignals',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'OLT ID',
+				name: 'olt_id',
+				type: 'number',
+				default: 0,
+				description: 'The ID of the OLT for which to get the ONUs statuses. Leave empty if you want signals from all OLTs.',
+			},
+			{
+				displayName: 'Board',
+				name: 'board',
+				type: 'number',
+				default: 0,
+				description: 'OLT board where the ONUs are placed. Leave it empty if you want signals from all boards on the provided OLT ID.',
+			},
+			{
+				displayName: 'Port',
+				name: 'port',
+				type: 'number',
+				default: 0,
+				description: 'OLT PON port where ONUs are placed. Leave it empty if you want signals from all PON ports on the provided board.',
+			},
+			{
+				displayName: 'Zone',
+				name: 'zone',
+				type: 'string',
+				default: '',
+				description: 'The zone where the ONUs are located. The Zone can contain only alphanumeric characters, spaces, underscore and the dash (-) character. Leave it empty if you want ONUs signals from all the zones.',
+			},
+		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*   	 						onu:getAllOnusDetails  					   	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getAllOnusDetails',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'OLT ID',
+				name: 'olt_id',
+				type: 'number',
+				default: 0,
+				description: 'The ID of the OLT for which to get the ONUs details. Leave empty if you want ONUs details from all OLTs.',
+			},
+			{
+				displayName: 'Board',
+				name: 'board',
+				type: 'number',
+				default: 0,
+				description: 'OLT board where the ONUs are placed. Leave it empty if you want ONUs details from all boards on the provided OLT ID.',
+			},
+			{
+				displayName: 'Port',
+				name: 'port',
+				type: 'number',
+				default: 0,
+				description: 'OLT PON port where ONUs are placed. Leave it empty if you want ONUs details from all PON ports on the provided board.',
+			},
+			{
+				displayName: 'Zone',
+				name: 'zone',
+				type: 'string',
+				default: '',
+				description: 'The zone where the ONUs are located. The Zone can contain only alphanumeric characters, spaces, underscore and the dash (-) character. Leave it empty if you want ONUs details from all the zones.',
+			},
+		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*     			onu:getOnuFullStatusInfoByOnuUniqueExternalId           	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'OLT External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getOnuFullStatusInfoByOnuUniqueExternalID',
+				],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Convert Text To JSON',
+		name: 'convertTextToJson',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getOnuFullStatusInfoByOnuUniqueExternalID',
+				],
+			},
+		},
+		default: false,
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*   	 		onu:getOnuTrafficGraphByOnuUniqueExternalId  			   	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		required: true,
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getOnuTrafficGraphByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'ONU unique external ID. The ONU external ID can contain only alphanumeric characters.',
+	},
+	{
+		displayName: 'Graph Type',
+		name: 'graphType',
+		required: true,
+		type: 'options',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getOnuTrafficGraphByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: 'hourly',
+		description: 'ONU traffic graph type',
+		options: [
+			{
+				name: 'hourly',
+				value: 'hourly',
+			},
+			{
+				name: 'daily',
+				value: 'daily',
+			},
+			{
+				name: 'weekly',
+				value: 'weekly',
+			},
+			{
+				name: 'monthly',
+				value: 'monthly',
+			},
+			{
+				name: 'yearly',
+				value: 'yearly',
+			},
+		],
+	},
+	{
+		displayName: 'Binary Property',
+		name: 'binaryPropertyName',
+		type: 'string',
+		default: 'data',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'getOnuTrafficGraphByOnuUniqueExternalId',
+				],
+			},
+		},
+		description: 'Name of the binary property to which to write the data of the read file',
 	},
 
 	/*-------------------------------------------------------------------------- */
@@ -585,7 +808,7 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'Tag Transform Mode',
 				name: 'tag_transform_mode',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'Tag-transform mode',
 				options: [
 					{
@@ -627,9 +850,13 @@ export const onuFields: INodeProperties[] = [
 		default: '',
 	},
 	{
-		displayName: 'Additional Fields',
-		name: 'additionalFields',
-		type: 'collection',
+
+		displayName: 'TR069 profile name',
+		name: 'tr069_profile',
+		type: 'string',
+		required: true,
+		default: '',
+		description: 'tr069_profile',
 		displayOptions: {
 			show: {
 				resource: [
@@ -640,17 +867,6 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
-		placeholder: 'Add Field',
-		default: {},
-		options: [
-			{
-				displayName: 'tr069_profile',
-				name: 'tr069_profile',
-				type: 'string',
-				default: 0,
-				description: 'TR069 profile name',
-			},
-		],
 	},
 
 	/*-------------------------------------------------------------------------- */
@@ -695,7 +911,7 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'Configuration method',
 				name: 'configuration_method',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'Configuration method',
 				options: [
 					{
@@ -709,11 +925,11 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 			{
-				displayName: 'ipv4ipv6',
+				displayName: 'IP protocol',
 				name: 'ip_protocol',
 				type: 'options',
-				default: 'default',
-				description: 'IP protocol',
+				default: '',
+				description: 'ipv4ipv6',
 				options: [
 					{
 						name: 'ipv4',
@@ -726,11 +942,11 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 			{
-				displayName: 'ipv6 Address Mode',
+				displayName: 'IP Address Mode ',
 				name: 'ipv6_address_mode',
 				type: 'options',
-				default: 'default',
-				description: 'IP Address Mode',
+				default: '',
+				description: 'ipv6 Address Mode',
 				options: [
 					{
 						name: 'DHCPv6',
@@ -754,21 +970,21 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'IPv6 address',
 				name: 'ipv6_address',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'IPv6 address',
 			},
 			{
 				displayName: 'IPv6 gateway',
 				name: 'ipv6_gateway',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'IPv6 gateway',
 			},
 			{
 				displayName: 'DHCPv6-PD',
 				name: 'ipv6_prefix_delegation_mode',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'DHCPv6-PD',
 				options: [
 					{
@@ -789,7 +1005,7 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'IPv6 prefix address',
 				name: 'ipv6_prefix_address',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'IPv6 prefix address',
 			},
 		],
@@ -817,6 +1033,42 @@ export const onuFields: INodeProperties[] = [
 		default: '',
 	},
 	{
+		displayName: 'Username',
+		name: 'username',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'PPPoE username. The username can contain only alphanumeric characters. A maximum of 64 characters is allowed',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWanModeToPppoeByOnuUniqueExternalId',
+				],
+			},
+		},
+	},
+	{
+		displayName: 'Password',
+		name: 'password',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'PPPoE password. The password can contain only alphanumeric characters. A maximum of 64 characters is allowed',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWanModeToPppoeByOnuUniqueExternalId',
+				],
+			},
+		},
+	},
+	{
 		displayName: 'Additional Fields',
 		name: 'additionalFields',
 		type: 'collection',
@@ -834,29 +1086,13 @@ export const onuFields: INodeProperties[] = [
 		default: {},
 		options: [
 			{
-				displayName: 'Username',
-				name: 'username',
-				type: 'string',
-				default: 'default',
-				required: true,
-				description: 'PPPoE username. The username can contain only alphanumeric characters. A maximum of 64 characters is allowed',
-			},
-			{
-				displayName: 'Password',
-				name: 'password',
-				type: 'string',
-				default: 'default',
-				required: true,
-				description: 'PPPoE password. The password can contain only alphanumeric characters. A maximum of 64 characters is allowed',
-			},
-			{
 				displayName: 'Configuration method',
 				name: 'configuration_method',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'Configuration method',
 				options: [
-					
+
 					{
 						name: 'OMCI',
 						value: 'omci',
@@ -868,11 +1104,11 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 			{
-				displayName: 'ipv4ipv6',
+				displayName: 'IP Protocol',
 				name: 'ip_protocol',
 				type: 'options',
-				default: 'default',
-				description: 'IP protocol',
+				default: '',
+				description: 'ipv4ipv6',
 				options: [
 					{
 						name: 'ipv4',
@@ -888,7 +1124,7 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'ipv6 Address Mode',
 				name: 'ipv6_address_mode',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'IP Address Mode',
 				options: [
 					{
@@ -913,21 +1149,21 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'IPv6 address',
 				name: 'ipv6_address',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'IPv6 address',
 			},
 			{
 				displayName: 'IPv6 gateway',
 				name: 'ipv6_gateway',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'IPv6 gateway',
 			},
 			{
 				displayName: 'DHCPv6-PD',
 				name: 'ipv6_prefix_delegation_mode',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'DHCPv6-PD',
 				options: [
 					{
@@ -948,7 +1184,7 @@ export const onuFields: INodeProperties[] = [
 				displayName: 'IPv6 prefix address',
 				name: 'ipv6_prefix_address',
 				type: 'options',
-				default: 'default',
+				default: '',
 				description: 'IPv6 prefix address',
 			},
 		],
@@ -1007,44 +1243,6 @@ export const onuFields: INodeProperties[] = [
 				description: 'Example: 100M',
 			},
 		],
-	},
-
-	/*-------------------------------------------------------------------------- */
-	/*     			onu:getOnuFullStatusInfoByOnuUniqueExternalID           	 */
-	/* ------------------------------------------------------------------------- */
-
-	{
-		displayName: 'OLT External ID',
-		name: 'onuExternalId',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: [
-					'onu',
-				],
-				operation: [
-					'getOnuFullStatusInfoByOnuUniqueExternalID',
-				],
-			},
-		},
-		default: '',
-	},
-	{
-		displayName: 'Convert Text To JSON',
-		name: 'convertTextToJson',
-		type: 'boolean',
-		displayOptions: {
-			show: {
-				resource: [
-					'onu',
-				],
-				operation: [
-					'getOnuFullStatusInfoByOnuUniqueExternalID',
-				],
-			},
-		},
-		default: false,
 	},
 
 	/*-------------------------------------------------------------------------- */
@@ -1132,176 +1330,128 @@ export const onuFields: INodeProperties[] = [
 	},
 
 	/*-------------------------------------------------------------------------- */
-	/*   	 						onu:getAllOnusDetails  					   	 */
-	/* ------------------------------------------------------------------------- */
-
-	{
-		displayName: 'Additional Fields',
-		name: 'additionalFields',
-		type: 'collection',
-		displayOptions: {
-			show: {
-				resource: [
-					'onu',
-				],
-				operation: [
-					'getAllOnusDetails',
-				],
-			},
-		},
-		placeholder: 'Add Field',
-		default: {},
-		options: [
-			{
-				displayName: 'OLT ID',
-				name: 'olt_id',
-				type: 'number',
-				default: 0,
-				description: 'The ID of the OLT for which to get the ONUs details. Leave empty if you want ONUs details from all OLTs.',
-			},
-			{
-				displayName: 'Board',
-				name: 'board',
-				type: 'number',
-				default: 0,
-				description: 'OLT board where the ONUs are placed. Leave it empty if you want ONUs details from all boards on the provided OLT ID.',
-			},
-			{
-				displayName: 'Port',
-				name: 'port',
-				type: 'number',
-				default: 0,
-				description: 'OLT PON port where ONUs are placed. Leave it empty if you want ONUs details from all PON ports on the provided board.',
-			},
-			{
-				displayName: 'Zone',
-				name: 'zone',
-				type: 'string',
-				default: '',
-				description: 'The zone where the ONUs are located. The Zone can contain only alphanumeric characters, spaces, underscore and the dash (-) character. Leave it empty if you want ONUs details from all the zones.',
-			},
-		],
-	},
-
-	/*-------------------------------------------------------------------------- */
-	/*   	 						onu:getAllOnusSignals  					   	 */
-	/* ------------------------------------------------------------------------- */
-
-	{
-		displayName: 'Additional Fields',
-		name: 'additionalFields',
-		type: 'collection',
-		displayOptions: {
-			show: {
-				resource: [
-					'onu',
-				],
-				operation: [
-					'getAllOnusSignals',
-				],
-			},
-		},
-		placeholder: 'Add Field',
-		default: {},
-		options: [
-			{
-				displayName: 'OLT ID',
-				name: 'olt_id',
-				type: 'number',
-				default: 0,
-				description: 'The ID of the OLT for which to get the ONUs statuses. Leave empty if you want signals from all OLTs.',
-			},
-			{
-				displayName: 'Board',
-				name: 'board',
-				type: 'number',
-				default: 0,
-				description: 'OLT board where the ONUs are placed. Leave it empty if you want signals from all boards on the provided OLT ID.',
-			},
-			{
-				displayName: 'Port',
-				name: 'port',
-				type: 'number',
-				default: 0,
-				description: 'OLT PON port where ONUs are placed. Leave it empty if you want signals from all PON ports on the provided board.',
-			},
-			{
-				displayName: 'Zone',
-				name: 'zone',
-				type: 'string',
-				default: '',
-				description: 'The zone where the ONUs are located. The Zone can contain only alphanumeric characters, spaces, underscore and the dash (-) character. Leave it empty if you want ONUs signals from all the zones.',
-			},
-		],
-	},
-
-	/*-------------------------------------------------------------------------- */
-	/*   	 		onu:getOnuTrafficGraphByOnuUniqueExternalId  			   	 */
+	/*       		onu:setOnuWiFiPortModeToLanByOnuUniqueExternalId            	 */
 	/* ------------------------------------------------------------------------- */
 
 	{
 		displayName: 'ONU External ID',
 		name: 'onuExternalId',
-		required: true,
 		type: 'string',
+		required: true,
 		displayOptions: {
 			show: {
 				resource: [
 					'onu',
 				],
 				operation: [
-					'getOnuTrafficGraphByOnuUniqueExternalId',
+					'setOnuWiFiPortModeToLanByOnuUniqueExternalId',
 				],
 			},
 		},
 		default: '',
-		description: 'ONU unique external ID. The ONU external ID can contain only alphanumeric characters.',
 	},
 	{
-		displayName: 'Graph Type',
-		name: 'graphType',
+		displayName: 'WiFi Port',
+		name: 'wifi_port',
+		type: 'string',
+		default: '',
 		required: true,
-		type: 'options',
+		description: ' ONU WiFi port',
 		displayOptions: {
 			show: {
 				resource: [
 					'onu',
 				],
 				operation: [
-					'getOnuTrafficGraphByOnuUniqueExternalId',
+					'setOnuWiFiPortModeToLanByOnuUniqueExternalId',
 				],
 			},
 		},
-		default: 'hourly',
-		description: 'ONU traffic graph type',
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWiFiPortModeToLanByOnuUniqueExternalId',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
 		options: [
 			{
-				name: 'hourly',
-				value: 'hourly',
+				displayName: 'DHCP',
+				name: 'dhcp',
+				type: 'options',
+				default: '',
+				description: 'WiFi port DHCP',
+				options: [
+					{
+						name: 'No control',
+						value: 'no_control',
+					},
+					{
+						name: 'From ISP',
+						value: 'from_isp',
+					},
+					{
+						name: 'From ONU',
+						value: 'from_onu',
+					},
+					{
+						name: 'Forbidden',
+						value: 'forbidden',
+					},
+				],
 			},
 			{
-				name: 'daily',
-				value: 'daily',
+				displayName: 'SSID',
+				name: 'ssid',
+				type: 'options',
+				default: '',
+				description: 'WiFi port SSID',
 			},
 			{
-				name: 'weekly',
-				value: 'weekly',
+				displayName: 'Password',
+				name: 'password',
+				type: 'options',
+				default: '',
+				description: 'WiFi port password',
 			},
 			{
-				name: 'monthly',
-				value: 'monthly',
-			},
-			{
-				name: 'yearly',
-				value: 'yearly',
+				displayName: 'Authentication Mode',
+				name: 'authentication_mode',
+				type: 'options',
+				default: '',
+				description: 'WiFi port authentication mode',
+				options: [
+					{
+						name: 'WPA2',
+						value: 'WPA2',
+					},
+					{
+						name: 'Open-system',
+						value: 'Open-system',
+					},
+				],
 			},
 		],
 	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:setOnuWifiPortModeToAccessByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
 	{
-		displayName: 'Binary Property',
-		name: 'binaryPropertyName',
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
 		type: 'string',
-		default: 'data',
 		required: true,
 		displayOptions: {
 			show: {
@@ -1309,11 +1459,228 @@ export const onuFields: INodeProperties[] = [
 					'onu',
 				],
 				operation: [
-					'getOnuTrafficGraphByOnuUniqueExternalId',
+					'setOnuWifiPortModeToAccessByOnuUniqueExternalId',
 				],
 			},
 		},
-		description: 'Name of the binary property to which to write the data of the read file',
+		default: '',
+	},
+	{
+		displayName: 'WiFi Port',
+		name: 'wifi_port',
+		type: 'string',
+		default: '',
+		required: true,
+		description: ' ONU WiFi port',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWifiPortModeToAccessByOnuUniqueExternalId',
+				],
+			},
+		},
+	},
+	{
+		displayName: 'VLAN',
+		name: 'vlan',
+		type: 'number',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWifiPortModeToAccessByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: 0,
+		description: 'WiFi port VLAN-ID',
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuWifiPortModeToAccessByOnuUniqueExternalId',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'DHCP',
+				name: 'dhcp',
+				type: 'options',
+				default: '',
+				description: 'WiFi port DHCP',
+				options: [
+					{
+						name: 'No control',
+						value: 'no_control',
+					},
+					{
+						name: 'From ISP',
+						value: 'from_isp',
+					},
+					{
+						name: 'From ONU',
+						value: 'from_onu',
+					},
+					{
+						name: 'Forbidden',
+						value: 'forbidden',
+					},
+				],
+			},
+			{
+				displayName: 'SSID',
+				name: 'ssid',
+				type: 'options',
+				default: '',
+				description: 'WiFi port SSID',
+			},
+			{
+				displayName: 'Password',
+				name: 'password',
+				type: 'options',
+				default: '',
+				description: 'WiFi port password',
+			},
+			{
+				displayName: 'Authentication Mode',
+				name: 'authentication_mode',
+				type: 'options',
+				default: '',
+				description: 'WiFi port authentication mode',
+				options: [
+					{
+						name: 'WPA2',
+						value: 'WPA2',
+					},
+					{
+						name: 'Open-system',
+						value: 'Open-system',
+					},
+				],
+			},
+		],
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:shutdownOnuWifiPortByOnuUniqueExernalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'shutdownOnuWifiPortByOnuUniqueExernalId',
+				],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'WiFi Port',
+		name: 'wifi_port',
+		type: 'string',
+		default: '',
+		required: true,
+		description: ' ONU WiFi port',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'shutdownOnuWifiPortByOnuUniqueExernalId',
+				],
+			},
+		},
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:rebootOnuByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'rebootOnuByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:resyncOnuConfigByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'resyncOnuConfigByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*       		onu:deleteOnuByOnuUniqueExternalId            	 */
+	/* ------------------------------------------------------------------------- */
+
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'deleteOnuByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
 	},
 
 	/*-------------------------------------------------------------------------- */
