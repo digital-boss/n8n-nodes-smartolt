@@ -189,36 +189,53 @@ export class SmartOlt implements INodeType {
 								break;
 							}
 
-							case 'authorize': {
-								// Authorize ONU <https://api.smartolt.com/#28dc6cf8-7a91-4729-aebb-8757f87e2fd3>
+							case 'getAllOnusSignals': {
+								// Get all ONUs signals <https://api.smartolt.com/#43e3094c-0db5-46ea-821e-1ae9c4038006>
 
-								body.olt_id = this.getNodeParameter('olt_id', i) as number;
-								body.pon_type = this.getNodeParameter('pon_type', i) as string;
-								body.sn = this.getNodeParameter('sn', i) as string;
-								body.onu_type = this.getNodeParameter('onu_type', i) as string;
-								body.onu_mode = this.getNodeParameter('onu_mode', i) as string;
-								body.vlan = this.getNodeParameter('vlan', i) as number;
-								body.zone = this.getNodeParameter('zone', i) as string;
-								body.name = this.getNodeParameter('name', i) as string;
 								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
-								Object.assign(body, additionalFields);
+								Object.assign(qs, additionalFields);
 
-								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/authorize_onu`, body);
+								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onus_signals`);
+
+								responseData = simplify(responseData);
 								break;
 							}
 
-							case 'updateOnuSpeedProfilesByOnuUniqueExternalId': {
-								// Update ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#6b753440-3567-8644-bfed-045dbfe3f248>
+							case 'getAllOnusDetails': {
+								// Get all ONUs details <https://api.smartolt.com/#4e11cd01-2e4b-4f83-807d-963c4e7434af>
+
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(qs, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_all_onus_details`, {}, qs);
+
+								responseData = simplify(responseData, 'onus');
+								break;
+							}
+
+							case 'getOnuStatusByOnuUniqueExternalId': {
+								// Get ONU status by ONU unique external ID <https://api.smartolt.com/#8b411df2-20c4-4249-9897-695d06b4b0ab>
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
-								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
-								Object.assign(body, additionalFields);
 
-								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/update_onu_speed_profiles/${onuExternalId}`, body);
+								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_status/${onuExternalId}`);
+
+								responseData = simplify(responseData);
 								break;
 							}
 
-							case 'getOnuFullStatusInfoByOnuUniqueExternalID': {
+							case 'getOnuAdministrativeStatusByOnuUniqueExternalId': {
+								// Get ONU administrative status by ONU unique external ID <https://api.smartolt.com/#310c143b-3240-4842-9843-ad052aa88461>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+
+								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_administrative_status/${onuExternalId}`);
+
+								responseData = simplify(responseData);
+								break;
+							}
+
+							case 'getOnuFullStatusInfoByOnuUniqueExternalId': {
 								// Get ONU full status info by ONU unique external ID <https://api.smartolt.com/#d3d19dbd-a232-4e08-93bc-a17500cf4b01>
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
@@ -355,42 +372,6 @@ export class SmartOlt implements INodeType {
 								break;
 							}
 
-							case 'setOnuEthernetPortModeToTransparentByOnuUniqueExternalId': {
-								// Set ONU ethernet port mode to Transparent by ONU unique external ID <https://api.smartolt.com/#be835312-92e4-4a89-b751-0fab05f542d4>
-
-								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
-								body.ethernet_port = this.getNodeParameter('ethernet_port', i) as string;
-								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
-								Object.assign(body, additionalFields);
-
-								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_ethernet_port_transparent/${onuExternalId}`, body);
-								break;
-							}
-
-							case 'getAllOnusDetails': {
-								// Get all ONUs details <https://api.smartolt.com/#4e11cd01-2e4b-4f83-807d-963c4e7434af>
-
-								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
-								Object.assign(qs, additionalFields);
-
-								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_all_onus_details`, {}, qs);
-
-								responseData = simplify(responseData, 'onus');
-								break;
-							}
-
-							case 'getAllOnusSignals': {
-								// Get all ONUs signals <https://api.smartolt.com/#43e3094c-0db5-46ea-821e-1ae9c4038006>
-
-								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
-								Object.assign(qs, additionalFields);
-
-								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onus_signals`);
-
-								responseData = simplify(responseData);
-								break;
-							}
-
 							case 'getOnuTrafficGraphByOnuUniqueExternalId': {
 								// Get ONU traffic graph by ONU unique external ID <https://api.smartolt.com/#8342f9ca-d6e2-4938-b5a0-8be0531d75a9>
 
@@ -433,6 +414,58 @@ export class SmartOlt implements INodeType {
 								break;
 							}
 
+							case 'getOnuSpeedProfilesByOnuUniqueExternalId': {
+								// Get ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#310c143b-3240-4842-9843-ad052aa88461>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+
+								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_speed_profiles/${onuExternalId}`);
+
+								responseData = simplify(responseData);
+								break;
+							}
+
+							case 'authorize': {
+								// Authorize ONU <https://api.smartolt.com/#28dc6cf8-7a91-4729-aebb-8757f87e2fd3>
+
+								body.olt_id = this.getNodeParameter('olt_id', i) as number;
+								body.pon_type = this.getNodeParameter('pon_type', i) as string;
+								body.sn = this.getNodeParameter('sn', i) as string;
+								body.onu_type = this.getNodeParameter('onu_type', i) as string;
+								body.onu_mode = this.getNodeParameter('onu_mode', i) as string;
+								body.vlan = this.getNodeParameter('vlan', i) as number;
+								body.zone = this.getNodeParameter('zone', i) as string;
+								body.name = this.getNodeParameter('name', i) as string;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/authorize_onu`, body);
+								break;
+							}
+
+							case 'updateOnuSpeedProfilesByOnuUniqueExternalId': {
+								// Update ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#6b753440-3567-8644-bfed-045dbfe3f248>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/update_onu_speed_profiles/${onuExternalId}`, body);
+								break;
+							}
+
+							case 'setOnuEthernetPortModeToTransparentByOnuUniqueExternalId': {
+								// Set ONU ethernet port mode to Transparent by ONU unique external ID <https://api.smartolt.com/#be835312-92e4-4a89-b751-0fab05f542d4>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.ethernet_port = this.getNodeParameter('ethernet_port', i) as string;
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_ethernet_port_transparent/${onuExternalId}`, body);
+								break;
+							}
+
 							case 'disableOnuForASpecifiedOnuUniqueExternalId': {
 								// Disable ONU for a specified ONU unique external ID <https://api.smartolt.com/#22e14a03-1c8c-4335-8439-41ef87b0bc41>
 
@@ -450,39 +483,6 @@ export class SmartOlt implements INodeType {
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
 
 								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/enable/${onuExternalId}`);
-
-								responseData = simplify(responseData);
-								break;
-							}
-
-							case 'getOnuStatusByOnuUniqueExternalId': {
-								// Get ONU status by ONU unique external ID <https://api.smartolt.com/#8b411df2-20c4-4249-9897-695d06b4b0ab>
-
-								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
-
-								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_status/${onuExternalId}`);
-
-								responseData = simplify(responseData);
-								break;
-							}
-
-							case 'getOnuAdministrativeStatusByOnuUniqueExternalId': {
-								// Get ONU administrative status by ONU unique external ID <https://api.smartolt.com/#310c143b-3240-4842-9843-ad052aa88461>
-
-								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
-
-								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_administrative_status/${onuExternalId}`);
-
-								responseData = simplify(responseData);
-								break;
-							}
-
-							case 'getOnuSpeedProfilesByOnuUniqueExternalId': {
-								// Get ONU speed profiles by ONU unique external ID <https://api.smartolt.com/#310c143b-3240-4842-9843-ad052aa88461>
-
-								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
-
-								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onu_speed_profiles/${onuExternalId}`);
 
 								responseData = simplify(responseData);
 								break;
