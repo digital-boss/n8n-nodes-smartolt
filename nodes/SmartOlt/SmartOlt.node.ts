@@ -447,6 +447,7 @@ export class SmartOlt implements INodeType {
 								// Set ONU Mgmt IP mode to DHCP by ONU unique external ID <https://api.smartolt.com/#1a24a4f8-64cf-4da6-af66-112d0e4c3a8e>
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.vlan = this.getNodeParameter('vlan', i) as number;
 								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
 								Object.assign(body, additionalFields);
 
@@ -459,7 +460,6 @@ export class SmartOlt implements INodeType {
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
 								body.tr069_profile = this.getNodeParameter('tr069_profile', i) as string;
-								Object.assign(body);
 
 								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/enable_tr069/${onuExternalId}`, body);
 								break;
@@ -469,8 +469,7 @@ export class SmartOlt implements INodeType {
 								// Set ONU WAN mode to DHCP by ONU unique external ID <https://api.smartolt.com/#11682489-4b03-4d4f-9773-1d04a51845ff>
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
-								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
-								Object.assign(body, additionalFields);
+								const body = this.getNodeParameter('additionalFields', i) as IDataObject;
 
 								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_onu_wan_mode_dhcp/${onuExternalId}`, body);
 								break;
@@ -542,7 +541,6 @@ export class SmartOlt implements INodeType {
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
 								body.wifi_port = this.getNodeParameter('wifi_port', i) as string;
-								Object.assign(body);
 
 								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/shutdown_wifi_port/${onuExternalId}`, body);
 								break;

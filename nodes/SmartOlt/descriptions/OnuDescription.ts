@@ -916,11 +916,11 @@ export const onuFields: INodeProperties[] = [
 				options: [
 					{
 						name: 'OMCI',
-						value: 'omci',
+						value: 'OMCI',
 					},
 					{
 						name: 'TR069',
-						value: 'tr069',
+						value: 'TR069',
 					},
 				],
 			},
@@ -950,33 +950,33 @@ export const onuFields: INodeProperties[] = [
 				options: [
 					{
 						name: 'DHCPv6',
-						value: 'dhcpv6',
+						value: 'DHCPv6',
 					},
 					{
 						name: 'Auto',
-						value: 'auto',
+						value: 'Auto',
 					},
 					{
 						name: 'Static',
-						value: 'static',
+						value: 'Static',
 					},
 					{
 						name: 'None',
-						value: 'none',
+						value: 'None',
 					},
 				],
 			},
 			{
 				displayName: 'IPv6 address',
 				name: 'ipv6_address',
-				type: 'options',
+				type: 'string',
 				default: '',
-				description: 'IPv6 address',
+				description: '',
 			},
 			{
 				displayName: 'IPv6 gateway',
 				name: 'ipv6_gateway',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'IPv6 gateway',
 			},
@@ -989,22 +989,22 @@ export const onuFields: INodeProperties[] = [
 				options: [
 					{
 						name: 'DHCPv6',
-						value: 'dhcpv6',
+						value: 'DHCPv6',
 					},
 					{
 						name: 'Static',
-						value: 'static',
+						value: 'Static',
 					},
 					{
 						name: 'None',
-						value: 'none',
+						value: 'None',
 					},
 				],
 			},
 			{
 				displayName: 'IPv6 prefix address',
 				name: 'ipv6_prefix_address',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'IPv6 prefix address',
 			},
@@ -1095,11 +1095,11 @@ export const onuFields: INodeProperties[] = [
 
 					{
 						name: 'OMCI',
-						value: 'omci',
+						value: 'OMCI',
 					},
 					{
 						name: 'TR069',
-						value: 'tr069',
+						value: 'TR069',
 					},
 				],
 			},
@@ -1129,33 +1129,33 @@ export const onuFields: INodeProperties[] = [
 				options: [
 					{
 						name: 'DHCPv6',
-						value: 'dhcpv6',
+						value: 'DHCPv6',
 					},
 					{
 						name: 'Auto',
-						value: 'auto',
+						value: 'Auto',
 					},
 					{
 						name: 'Static',
-						value: 'static',
+						value: 'Static',
 					},
 					{
 						name: 'None',
-						value: 'none',
+						value: 'None',
 					},
 				],
 			},
 			{
 				displayName: 'IPv6 address',
 				name: 'ipv6_address',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'IPv6 address',
 			},
 			{
 				displayName: 'IPv6 gateway',
 				name: 'ipv6_gateway',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'IPv6 gateway',
 			},
@@ -1168,22 +1168,22 @@ export const onuFields: INodeProperties[] = [
 				options: [
 					{
 						name: 'DHCPv6',
-						value: 'dhcpv6',
+						value: 'DHCPv6',
 					},
 					{
 						name: 'Static',
-						value: 'static',
+						value: 'Static',
 					},
 					{
 						name: 'None',
-						value: 'none',
+						value: 'None',
 					},
 				],
 			},
 			{
 				displayName: 'IPv6 prefix address',
 				name: 'ipv6_prefix_address',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'IPv6 prefix address',
 			},
@@ -1394,33 +1394,33 @@ export const onuFields: INodeProperties[] = [
 				options: [
 					{
 						name: 'No control',
-						value: 'no_control',
+						value: 'No control',
 					},
 					{
 						name: 'From ISP',
-						value: 'from_isp',
+						value: 'From ISP',
 					},
 					{
 						name: 'From ONU',
-						value: 'from_onu',
+						value: 'From ONU',
 					},
 					{
 						name: 'Forbidden',
-						value: 'forbidden',
+						value: 'Forbidden',
 					},
 				],
 			},
 			{
 				displayName: 'SSID',
 				name: 'ssid',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'WiFi port SSID',
 			},
 			{
 				displayName: 'Password',
 				name: 'password',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'WiFi port password',
 			},
@@ -1527,33 +1527,33 @@ export const onuFields: INodeProperties[] = [
 				options: [
 					{
 						name: 'No control',
-						value: 'no_control',
+						value: 'No control',
 					},
 					{
 						name: 'From ISP',
-						value: 'from_isp',
+						value: 'From ISP',
 					},
 					{
 						name: 'From ONU',
-						value: 'from_onu',
+						value: 'From ONU',
 					},
 					{
 						name: 'Forbidden',
-						value: 'forbidden',
+						value: 'Forbidden',
 					},
 				],
 			},
 			{
 				displayName: 'SSID',
 				name: 'ssid',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'WiFi port SSID',
 			},
 			{
 				displayName: 'Password',
 				name: 'password',
-				type: 'options',
+				type: 'string',
 				default: '',
 				description: 'WiFi port password',
 			},
@@ -1604,7 +1604,7 @@ export const onuFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		description: ' ONU WiFi port',
+		description: 'ONU WiFi port',
 		displayOptions: {
 			show: {
 				resource: [
@@ -1647,6 +1647,7 @@ export const onuFields: INodeProperties[] = [
 		displayName: 'ONU External ID',
 		name: 'onuExternalId',
 		type: 'string',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -1658,7 +1659,6 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
-		default: '',
 	},
 
 	/*-------------------------------------------------------------------------- */
@@ -1669,7 +1669,9 @@ export const onuFields: INodeProperties[] = [
 		displayName: 'ONU External ID',
 		name: 'onuExternalId',
 		type: 'string',
+		default: '',
 		required: true,
+		description: 'Comma separated list of ONU unique external IDs. A maximum of 10 ONU unique external IDs are allowed',
 		displayOptions: {
 			show: {
 				resource: [
@@ -1680,7 +1682,6 @@ export const onuFields: INodeProperties[] = [
 				],
 			},
 		},
-		default: '',
 	},
 
 	/*-------------------------------------------------------------------------- */
