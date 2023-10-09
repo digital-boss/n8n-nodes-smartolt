@@ -47,7 +47,7 @@ export const onuOperations: INodeProperties[] = [
 			},
 			{
 				name: 'Get ONU Full Status Info By ONU Unique External ID',
-				value: 'getOnuFullStatusInfoByOnuUniqueExternalId',
+				value: 'getOnuFullStatusInfoByOnuUniqueExternalID',
 			},
 			{
 				name: 'Get ONU Traffic Graph By ONU Unique External ID',
@@ -324,7 +324,7 @@ export const onuFields: INodeProperties[] = [
 	},
 
 	/*-------------------------------------------------------------------------- */
-	/*     			onu:getOnuFullStatusInfoByOnuUniqueExternalId           	 */
+	/*     			onu:getOnuFullStatusInfoByOnuUniqueExternalID           	 			 */
 	/* ------------------------------------------------------------------------- */
 
 	{

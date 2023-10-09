@@ -195,7 +195,7 @@ export class SmartOlt implements INodeType {
 								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
 								Object.assign(qs, additionalFields);
 
-								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onus_signals`);
+								responseData = await smartOltApiRequest.call(this, 'GET', `/onu/get_onus_signals`, {}, qs);
 
 								responseData = simplify(responseData);
 								break;
@@ -235,7 +235,7 @@ export class SmartOlt implements INodeType {
 								break;
 							}
 
-							case 'getOnuFullStatusInfoByOnuUniqueExternalId': {
+							case 'getOnuFullStatusInfoByOnuUniqueExternalID': {
 								// Get ONU full status info by ONU unique external ID <https://api.smartolt.com/#d3d19dbd-a232-4e08-93bc-a17500cf4b01>
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
