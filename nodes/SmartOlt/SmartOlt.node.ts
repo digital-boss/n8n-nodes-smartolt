@@ -600,6 +600,10 @@ export class SmartOlt implements INodeType {
 								responseData = simplify(responseData);
 								break;
 							}
+
+							default: {
+								throw new Error('Operation not supported');
+							}
 						}
 						break;
 				}
