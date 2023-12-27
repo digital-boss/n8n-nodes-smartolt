@@ -112,8 +112,20 @@ export const onuOperations: INodeProperties[] = [
 				value: 'disableOnuForASpecifiedOnuUniqueExternalId',
 			},
 			{
+				name: 'Disable ONU VoIP port by ONU unique external ID',
+				value: 'disableOnuVoipPortByOnuUniqueExternalId',
+			},
+			{
 				name: 'Enable ONU by ONU unique external ID',
 				value: 'enableOnuByOnuUniqueExternalId',
+			},
+			{
+				name: 'Set ONU VoIP mode to Enabled by ONU unique external ID',
+				value: 'setOnuVoipModeEnabledByOnuUniqueExternalId',
+			},
+			{
+				name: 'Enable ONU VoIP port by ONU unique external ID',
+				value: 'enableOnuVoipPortByOnuUniqueExternalId',
 			},
 			{
 				name: 'Delete ONU by ONU unique external ID',
@@ -1712,5 +1724,190 @@ export const onuFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'ONU unique external ID. The ONU external ID can contain only alphanumeric characters.',
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*   	 				onu:disableOnuVoipPortByOnuUniqueExternalId			 */
+	/* ------------------------------------------------------------------------- */
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		required: true,
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'disableOnuVoipPortByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'ONU unique external ID. The ONU external ID can contain only alphanumeric characters.',
+	},
+	{
+		displayName: 'VoIP Port',
+		name: 'voip_port',
+		required: true,
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'disableOnuVoipPortByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*   	 				onu:setOnuVoipModeEnabledByOnuUniqueExternalId		 */
+	/* ------------------------------------------------------------------------- */
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		required: true,
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuVoipModeEnabledByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'ONU unique external ID. The ONU external ID can contain only alphanumeric characters.',
+	},
+	{
+		displayName: 'VoIP Attach To',
+		name: 'voip_attach_to',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'setOnuVoipModeEnabledByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'Attach VoIP to WAN or Mgmt',
+	},
+
+	/*-------------------------------------------------------------------------- */
+	/*   	 				onu:enableOnuVoipPortByOnuUniqueExternalId			 */
+	/* ------------------------------------------------------------------------- */
+	{
+		displayName: 'ONU External ID',
+		name: 'onuExternalId',
+		required: true,
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'enableOnuVoipPortByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'ONU unique external ID. The ONU external ID can contain only alphanumeric characters.',
+	},
+	{
+		displayName: 'VoIP Port',
+		name: 'voip_port',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'enableOnuVoipPortByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Phone Number',
+		name: 'phone_number',
+		required: true,
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'enableOnuVoipPortByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'The phone number can contain only digits and the + character. A maximum of 25 characters is allowed.'
+	},
+	{
+		displayName: 'Password',
+		name: 'password',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'enableOnuVoipPortByOnuUniqueExternalId',
+				],
+			},
+		},
+		default: '',
+		description: 'The password can contain only alphanumeric characters. A maximum of 25 characters is allowed.'
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		displayOptions: {
+			show: {
+				resource: [
+					'onu',
+				],
+				operation: [
+					'enableOnuVoipPortByOnuUniqueExternalId',
+				],
+			},
+		},
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'SIP User ID',
+				name: 'sip_userid',
+				type: 'string',
+				default: '',
+				description: 'The SIP user ID can contain only digits and the + character. A maximum of 25 characters is allowed.'
+			},
+			{
+				displayName: 'VoIP Profile Name',
+				name: 'voip_profile_name',
+				type: 'string',
+				default: '',
+			},
+		],
 	},
 ];

@@ -579,12 +579,53 @@ export class SmartOlt implements INodeType {
 								break;
 							}
 
+							case 'disableOnuVoipPortByOnuUniqueExternalId': {
+								// Disable ONU VoIP port for a specified ONU unique external ID <https://api.smartolt.com/#c0a7ec36-9a60-4401-b242-086396a4cd47>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.voip_port = this.getNodeParameter('voip_port', i) as string;
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/disable_onu_voip_port/${onuExternalId}`, body);
+
+								responseData = simplify(responseData);
+								break;
+							}
+
 							case 'enableOnuByOnuUniqueExternalId': {
 								// Enable ONU by ONU unique external ID <https://api.smartolt.com/#393d530b-5d69-4d25-9a2b-130282097b23>
 
 								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
 
 								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/enable/${onuExternalId}`);
+
+								responseData = simplify(responseData);
+								break;
+							}
+
+							case 'setOnuVoipModeEnabledByOnuUniqueExternalId': {
+								// Set ONU VoIP mode to Enabled by ONU unique external ID <https://api.smartolt.com/#2131a2e6-8961-4a43-b15b-1c5e61571f26>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.voip_attach_to = this.getNodeParameter('voip_attach_to', i) as string;
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/set_onu_voip_enabled/${onuExternalId}`, body);
+
+								responseData = simplify(responseData);
+								break;
+							}
+
+							case 'enableOnuVoipPortByOnuUniqueExternalId': {
+								// Enable ONU VoIP port for a specified ONU unique external ID <https://api.smartolt.com/#91a93ac6-9f5f-4069-842f-f492f76e9422>
+
+								const onuExternalId = this.getNodeParameter('onuExternalId', i) as string;
+								body.voip_port = this.getNodeParameter('voip_port', i) as string;
+								body.phone_number = this.getNodeParameter('phone_number', i) as string;
+								body.password = this.getNodeParameter('password', i) as string;
+
+								const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+								Object.assign(body, additionalFields);
+
+								responseData = await smartOltApiRequest.call(this, 'POST', `/onu/enable_onu_voip_port/${onuExternalId}`, body);
 
 								responseData = simplify(responseData);
 								break;
